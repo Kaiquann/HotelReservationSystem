@@ -1,0 +1,51 @@
+﻿@model IPagedList<Booking>
+@{
+    string[] fields =
+    [
+        "", "Id", "Order Number", "Room Number",
+        "Room Type", "Status", "Is Add Bed?",
+        "Preference", "Is Corner Room?", "Check In Date",
+        "Check Out Date", "When Check In", "When Check Out",
+        "Actions"
+    ];
+}
+
+<partial name="_SweetAlert"/>
+
+<partial name="Table/_FilterFormPartial"/>
+<partial name="Table/_SearchBarPartial"/>
+<partial name="Table/_CountRecordPartial" model="@Model"/>
+<table class="table table-bordered table-sm">
+    <partial name="Table/_HeaderPartial" model="@fields"/>
+    <tbody>
+    @foreach (Booking booking in Model)
+    {
+        <tr data-checkable>
+            <td>
+                <input type="checkbox" name="ids" value="@booking.Id" form="select-form" class="select-box"/>
+            </td>
+            <td>@booking.Id</td>
+            <td>@booking.Order.OrderNumber</td>
+            <td>@booking.RoomNumber</td>
+            <td>@booking.Room.RoomCategory.Type</td>
+            <td>@EnumHelper.GetDisplayName(booking.Status)</td>
+            <td>@(booking.IsAddBed ? "Yes" : "No")</td>
+            <td>@(booking.Room.RoomSetting.GetRoomPreference())</td>
+            <td>@(booking.Room.RoomSetting.IsCornerRoom ? "Yes" : "No")</td>
+            <td>@booking.CheckInDate</td>
+            <td>@booking.CheckOutDate</td>
+            <td>@(booking.WhenCheckInDateTime == null ? "N/A" : booking.WhenCheckInDateTime)</td>
+            <td>@(booking.WhenCheckOutDateTime == null ? "N/A" : booking.WhenCheckOutDateTime)</td>
+            <td>
+                <div class="gap-1 text-nowrap">
+                    <a asp-area="Admin" asp-controller="Booking" asp-action="Show" asp-route-id="@booking.Id" class="btn btn-secondary btn-sm">
+                        <i class="fas fa-eye me-2" aria-hidden="true"></i> View
+                    </a>
+                    <partial name="_ActionButtonTable" model="@booking"/>
+                </div>
+            </td>
+        </tr>
+    }
+    </tbody>
+</table>
+<partial name="Table/_FooterPartial" model="@Model"/>

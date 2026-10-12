@@ -1,0 +1,64 @@
+﻿@model IPagedList<Room>
+@{
+    string[] fields =
+    [
+        "", "Id", "RoomCategory", "RoomCode",
+        "RoomSetting", "CreatedAt"
+    ];
+}
+
+<partial name="_SweetAlert"/>
+
+<partial name="Table/_FilterFormPartial"/>
+<partial name="Table/_SearchBarPartial"/>
+<partial name="Table/_CountRecordPartial" model="@Model"/>
+<table class="table table-bordered table-sm">
+    <partial name="Table/_HeaderPartial" model="@fields"/>
+    <tbody>
+    @foreach (var room in Model)
+    {
+        <tr data-checkable>
+            <td>
+                <input type="checkbox" name="ids" value="@room.Id" form="select-form" class="select-box"/>
+            </td>
+            <td>@room.Id</td>
+            <td>@room.RoomCategory.Type</td>
+            <td>@room.RoomCode</td>
+
+            <td>
+                @if (room.RoomSetting.IsSmokingArea)
+                {
+                    <p>
+                        <i class="fas fa-smoking text-success me-2"></i> Smoking Area
+                    </p>
+                }
+                @if (room.RoomSetting.IsLandscapeArea)
+                {
+                    <p>
+                        <i class="fas fa-tree text-success me-2"></i> Landscape View
+                    </p>
+                }
+                @if (room.RoomSetting.IsCornerRoom)
+                {
+                    <p>
+                        <i class="fas fa-door-open text-success me-2"></i> Corner Room
+                    </p>
+                }
+                @if (room.RoomCategory.IsAddBed)
+                {
+                    <p>
+                        <i class="fas fa-bed text-success me-2"></i> Additional Bed
+                    </p>
+                }
+            </td>
+
+            <td>@room.CreatedAt</td>
+            <td>
+                <a asp-area="Admin" asp-controller="Room" asp-action="Edit" asp-route-id="@room.Id" class="btn btn-primary">Edit</a>
+                <partial name="_ActionButton" model="@room"/>
+            </td>
+        </tr>
+    }
+    </tbody>
+</table>
+<partial name="Table/_FooterPartial" model="@Model"/>

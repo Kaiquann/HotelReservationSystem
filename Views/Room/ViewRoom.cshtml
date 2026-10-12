@@ -1,0 +1,375 @@
+﻿@model ViewRoomVm
+@{
+    ViewBag.Title = "Hotel";
+}
+
+<body>
+<style>
+    .suite-header {
+        font-size: 2rem;
+        font-weight: bold;
+        margin-bottom: 15px;
+    }
+
+    .suite-description {
+        font-size: 1rem;
+        margin-bottom: 10px;
+    }
+
+    .amenities-icons div {
+        align-items: center;
+        display: flex;
+        font-size: 1rem;
+        margin-bottom: 8px;
+    }
+
+    .amenities-icons i {
+        color: #007BFF;
+        font-size: 20px;
+        margin-right: 10px;
+    }
+
+    .btn-custom {
+        background-color: #f8f9fa;
+        border: 1px solid #ddd;
+        border-radius: 8px;
+        color: black;
+        font-size: 1rem;
+        padding: 10px 15px;
+        transition: all 0.3s ease;
+    }
+
+    .btn-custom:hover {
+        background-color: #007BFF;
+        color: #fff;
+    }
+
+    .active-button {
+        background-color: red !important;
+        border-color: red !important;
+        color: white !important;
+    }
+
+    .price-options p {
+        color: #4CAF50;
+        font-weight: bold;
+    }
+
+    .card { border: none; }
+
+    .save-total {
+        color: #007BFF;
+        font-weight: bold;
+    }
+
+    .cancel-rules {
+        font-size: 0.9rem;
+        line-height: 1.4;
+        margin-top: 20px;
+    }
+
+    .colorful-arrow {
+        background-color: rgba(0, 123, 255, 0.8);
+        border-radius: 20%;
+        height: 50px;
+        width: 50px;
+    }
+
+    .viewhotel-container { box-shadow: 10px 10px 10px 10px rgba(0, 0, 0, 0.1); }
+
+
+    .suite-description {
+        font-size: 1rem;
+        margin-bottom: 10px;
+    }
+
+    .form-control {
+        font-size: 1rem;
+        height: 45px;
+    }
+
+    .review-item {
+        border-bottom: 1px solid #ddd;
+        padding: 15px 0;
+    }
+
+    .review-item:last-child { border-bottom: none; }
+
+    .review-author { font-weight: bold; }
+
+    .review-date {
+        color: #888;
+        font-size: 0.9rem;
+    }
+
+    .star-rating { display: flex; }
+
+    .star {
+        color: #ccc;
+        font-size: 1.2rem;
+    }
+
+    .star.filled { color: #f4c542; }
+
+    .assessment-summary {
+        background-color: #f9f9f9;
+        border-radius: 8px;
+        box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
+        padding: 20px;
+        text-align: center;
+    }
+
+    .assessment-summary h5 {
+        font-size: 1.2rem;
+        margin-bottom: 10px;
+    }
+
+    .btn-add-review {
+        background-color: #007bff;
+        border: none;
+        border-radius: 20px;
+        color: #fff;
+        cursor: pointer;
+        padding: 10px 20px;
+    }
+
+    .btn-add-review:hover { background-color: #0056b3; }
+
+    .modal {
+        align-items: center;
+        background-color: rgba(0, 0, 0, 0.5);
+        display: flex;
+        height: 100%;
+        justify-content: center;
+        left: 0;
+        position: fixed;
+        top: 0;
+        width: 100%;
+    }
+
+    .modal-content {
+        background-color: #fff;
+        border-radius: 8px;
+        padding: 20px;
+        width: 50%;
+    }
+
+    .close-btn {
+        cursor: pointer;
+        float: right;
+        font-size: 30px;
+        width: 30px;
+    }
+
+    .close-btn:hover {
+        background-color: #ff3636;
+        color: white;
+    }
+
+    #rating-stars .star {
+        color: #ccc;
+        cursor: pointer;
+        font-size: 24px;
+    }
+
+    #rating-stars .star.filled { color: gold; }
+
+</style>
+
+<div class="m-5">
+    <div class="row viewhotel-container">
+        <div class="col-md-5">
+            <a class="m-4" asp-area="" asp-controller="Room" asp-action="Index" style="font-size: 30px; margin: 10px;">
+                <i class="fa-solid fa-arrow-left"></i>
+            </a>
+            <div id="suiteCarousel" class="carousel slide" data-bs-ride="carousel">
+                <div class="carousel-indicators">
+                    @for (var i = 0; i < Model.RoomCategory.RoomImages.Count(); i++)
+                    {
+                        <button type="button" data-bs-target="#suiteCarousel" data-bs-slide-to="@i"
+                                class="@(i == 0 ? "active" : "")" aria-current="@(i == 0 ? "true" : "false")"
+                                aria-label="Slide @(i + 1)">
+                        </button>
+                    }
+                </div>
+
+                <div class="carousel-inner">
+                    @if (Model.RoomCategory.RoomImages != null)
+                    {
+                        @foreach (var img in Model.RoomCategory.RoomImages)
+                        {
+                            var index = 0;
+
+                            <div class="carousel-item @(index == 0 ? "active" : "")">
+                                <img src="/@(Common.ImageUploadPath + img.ImagePath)" class="d-block w-100" style="height: 700px;" alt="Suite Image" loading="lazy"/>
+                            </div>
+                            index++;
+                        }
+                    }
+                    else
+                    {
+                        <p>No images available</p>
+                    }
+                </div>
+
+
+                <button class="colorful-arrow carousel-control-prev align-self-center" type="button" data-bs-target="#suiteCarousel" data-bs-slide="prev">
+                    <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                    <span class="visually-hidden">Previous</span>
+                </button>
+                <button class="colorful-arrow carousel-control-next align-self-center" type="button" data-bs-target="#suiteCarousel" data-bs-slide="next">
+                    <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                    <span class="visually-hidden">Next</span>
+                </button>
+            </div>
+        </div>
+
+        <div class="col-md-7 p-5">
+            <div class="suite-header">@Model.RoomCategory.Type Room</div>
+            <h3 class="fw-bold">RM @Model.RoomCategory.Price / night</h3>
+            <p class="suite-description">@Model.RoomCategory.Description.</p>
+            <p class="suite-description">Offers light breakfast: coffee or tea and rolls with jam. <br> Sea View. Sunlight in the mornings.</p>
+
+            <h6 class="mt-4 fw-bold text-decoration-underline">Max Person</h6>
+            <p class="suite-description">
+                @Model.RoomCategory.MaxPeople <i class="fa-solid fa-person"></i>
+            </p>
+
+            <h6 class="mt-4">Room Amenities</h6>
+            <div class="row amenities-icons">
+                <div class="col-6"><i class="fa-solid fa-shower"></i> Shower</div>
+                <div class="col-6"><i class="bi bi-concierge-bell"></i> Concierge</div>
+                <div class="col-6"><i class="bi bi-bag"></i> Luggage</div>
+                <div class="col-6"><i class="bi bi-clock"></i> 24/7 Service</div>
+            </div>
+
+            <form asp-action="ViewRoom" method="POST" id="form">
+                <input type="hidden" asp-for="RoomCategory.Id" name="RoomCategory.Id" value="@Model.RoomCategory.Id"/>
+                <input type="hidden" asp-for="Preference" name="Preference" id="selectedPreference"/>
+                <div class="row justify-content-between my-4">
+                    <div class="col-md-5 mb-3">
+                        <label asp-for="CheckInDate" class="fw-bold form-label text-decoration-underline">Check-In Date</label>
+                        <input asp-for="CheckInDate" class="form-control" type="date" id="CheckInDate"/>
+                        <span asp-validation-for="CheckInDate" class="text-danger"></span>
+                    </div>
+                    <div class="col-md-5 mb-3">
+                        <label asp-for="CheckOutDate" class="fw-bold form-label text-decoration-underline">Check-Out Date</label>
+                        <input asp-for="CheckOutDate" class="form-control" type="date" id="CheckOutDate"/>
+                        <span asp-validation-for="CheckOutDate" class="text-danger"></span>
+                    </div>
+                </div>
+
+                <div class="mt-4">
+                    <p class="text-decoration-underline">
+                        <strong>Choose Your Preference (optional):</strong>
+                    </p>
+                    <div class="d-flex gap-3">
+                        <button type="button" form="form" name="preference" value="@Preference.SmokingArea" class="btn btn-custom p-3 fw-bold" id="smokingButton">
+                            <i class="fas fa-smoking"></i> Smoking Area
+                        </button>
+                        <button type="button" form="form" name="preference" value="@Preference.LandscapeView" class="btn btn-custom p-3 fw-bold" id="landscapeButton">
+                            <i class="fas fa-tree"></i> Landscape View
+                        </button>
+                    </div>
+                </div>
+
+                @if (Model.RoomCategory.IsAddBed || Model.IsCornerRoom)
+                {
+                    <div class="border rounded p-4 my-4 bg-light" style="width: fit-content">
+                        <p class="mb-4 text-decoration-underline text-primary fw-bold h5">Additional Options</p>
+                        <div class="form-check mb-3">
+                            @if (Model.RoomCategory.IsAddBed)
+                            {
+                                <input class="form-check-input" type="checkbox" name="IsAddBed" id="addBedCheckbox" value="true"/>
+                                <label class="form-check-label ms-2" for="addBedCheckbox">
+                                    Add Extra Bed <span class="text-muted">(RM 50.00 per night)</span>
+                                </label>
+                            }
+                            <br/>
+                            @if (Model.IsCornerRoom)
+                            {
+                                <input class="form-check-input" type="checkbox" name="IsCornerRoom" id="IsAddBedCheckBox" value="true"/>
+                                <label class="form-check-label ms-2" for="IsCornerRoomCheckBox">
+                                    Corner Room <span class="text-muted">(RM 100.00 per night)</span>
+                                </label>
+                            }
+                        </div>
+                    </div>
+                }
+
+                <div class="row">
+                    <div class="col-md-6">
+                        <button type="submit" form="form" class="btn btn-danger btn-lg w-100 mt-4">
+                            Add to cart
+                        </button>
+                    </div>
+
+                    <div class="col-md-6">
+                        <button type="submit" class="btn btn-danger btn-lg w-100 mt-4" id="Price-button" formaction="/Payment/BuyNow?id=@Model.RoomCategory.Id">
+                            Book Now
+                        </button>
+                    </div>
+                </div>
+            </form>
+            <h5 class="mt-4 text-decoration-underline">Cancellation Rules :</h5>
+            <div class="cancel-rules">
+                - Orders can only be canceled within <strong>7 days</strong> of the payment date. <br>
+                - <strong>No refunds</strong> will be provided for cancellations after <strong>7 days</strong> from the payment date.
+            </div>
+        </div>
+
+        <div class="table-responsive" id="table-ajax">
+            <partial name="_RoomCategoryReview"/>
+        </div>
+
+    </div>
+</div>
+</body>
+
+@section foot {
+    <script>
+        $("#smokingButton").addClass('active-button');
+        $("#selectedPreference").val($("#smokingButton").val());
+        $("button[name='preference']").on("click",
+            function(event) {
+                event.preventDefault();
+                $("button[name='preference']").removeClass('active-button');
+                $(this).addClass('active-button');
+                $("#selectedPreference").val($(this).val());
+            });
+
+        $('.btn-add-review').on('click',
+            function() {
+                $('#reviewModal').css('display', 'flex');
+            });
+
+        function closeReviewModal() {
+            $('#reviewModal').css('display', 'none');
+        }
+
+//Roomcategory review prompt out box
+        $('#rating-stars .star').each(function() {
+            $(this).on('click',
+                function() {
+                    const rating = $(this).data('value');
+                    $('#rating-stars .star').removeClass('filled');
+                    for (let i = 1; i <= rating; i++) {
+                        $(`#rating-stars .star[data-value="${i}"]`).addClass('filled');
+                    }
+                    $('#ratingValue').val(rating);
+                });
+        });
+
+        $('#viewAllBtn').on('click',
+            function() {
+                $('.review-item').each(function(index) {
+                    if (index >= 3) {
+                        $(this).toggle();
+                    }
+                });
+
+                const buttonText = $(this).text() === 'View All' ? 'View Less' : 'View All';
+                $(this).text(buttonText);
+            });
+    </script>
+}

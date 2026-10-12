@@ -1,0 +1,4 @@
+﻿@model string
+
+<img src="@(!string.IsNullOrEmpty(Model) ? "/" + Common.ImageUploadPath + Model : "/images/profile-icon.png")"
+     alt="User Profile Image" class="img-thumbnail" loading="lazy" style="max-height: 200px; max-width: 200px;"/>

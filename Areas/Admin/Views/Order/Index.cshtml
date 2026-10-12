@@ -1,0 +1,16 @@
+﻿@model IPagedList<Order>
+@{
+    ViewBag.Title = "Manage Orders";
+}
+
+<section>
+    <div class="container my-5">
+        <h2 class="text-center mb-4">@ViewBag.Title</h2>
+
+        <partial name="Order/_FilterBar"/>
+
+        <div id="table-ajax">
+            <partial name="_Index"/>
+        </div>
+    </div>
+</section>

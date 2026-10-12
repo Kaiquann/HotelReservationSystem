@@ -1,0 +1,214 @@
+﻿@model RoomVm
+@{
+    ViewBag.Title = "Home Page";
+    bool isActive = true;
+}
+
+<body>
+<style>
+    .section1 {
+        background-image: url('/images/homepage.jpg');
+        background-position: center center;
+        background-size: cover;
+        height: 700px;
+        position: relative;
+        text-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);
+    }
+
+    .section2 img { border-radius: 10px; }
+
+    .btn-warning {
+        background-color: #ff2c2c;
+        border: none;
+        color: white;
+        font-size: 15px;
+    }
+
+    .btn-warning:hover {
+        background-color: #ff2c2c;
+        color: #000;
+    }
+
+    .carousel-inner img {
+        border-radius: 10px;
+        height: 400px;
+        object-fit: cover;
+    }
+
+    .carousel-control-prev-icon,
+    .carousel-control-next-icon {
+        background-color: rgba(0, 0, 0, 0.5);
+        border-radius: 50%;
+    }
+
+    .carousel-indicators [data-bs-target] { background-color: #dc3545; }
+
+    .carousel-indicators .active { background-color: #c82333; }
+
+    .carousel-item { display: none; }
+
+    .carousel-item.active { display: block; }
+
+    .word-container {
+        background-color: #292929;
+        border: 2px solid #ddd;
+        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        color: #ffffff;
+        transition: transform 0.3s, box-shadow 0.3s;
+    }
+
+    .word-container h4 {
+        font-weight: bold;
+        margin-bottom: 10px;
+    }
+
+    .word-container p {
+        font-size: 0.9rem;
+        line-height: 1.4;
+    }
+
+    .word-container:hover {
+        border-color: #ff4d4d;
+        box-shadow: 0 8px 12px rgba(0, 0, 0, 0.2);
+        transform: translateY(-5px);
+    }
+
+    .video-container {
+        max-width: 100%;
+        overflow: hidden;
+        text-align: center;
+    }
+
+    #mute-toggle {
+        font-size: 1rem;
+        margin-top: 15px;
+        padding: 0.5rem 1.5rem;
+    }
+
+</style>
+
+<section class="section1 text-center text-white d-flex align-items-center">
+    <div class="container">
+        <h1 class="display-4 fw-bold" style="font-family: Brush Script MT, Brush Script Std, cursive; font-size: 80px;">Spend Your Dream Holidays with Us</h1>
+        <p class="lead mt-3">The pain itself is very important, and it will be followed by the client, but this is what happens at the same time.</p>
+        <a class="btn btn-warning mt-4 px-5 py-2" asp-area="" asp-controller="room" asp-action="Index">
+            <strong>Book Now</strong>
+        </a>
+    </div>
+</section>
+
+@if (Model.RoomCategories.Any())
+{
+    <section class="welcome-section text-center py-5">
+        <div class="container">
+            <h2 class="mb-3">WELCOME TO HOTEL</h2>
+            <p class="mb-4 fw-bold">
+                Top Sales in Our hotel
+            </p>
+
+            <div id="carouselExampleIndicators" class="carousel slide" data-bs-ride="carousel">
+                <div class="carousel-indicators">
+                    @{
+                        int index = 0;
+                    }
+                    @foreach (var room in Model.RoomCategories)
+                    {
+                        <button type="button" data-bs-target="#carouselExampleIndicators"
+                                data-bs-slide-to="@index"
+                                class="@(index == 0 ? "active" : "")"
+                                aria-current="@(index == 0 ? "true" : "false")"
+                                aria-label="Slide @(index + 1)">
+                        </button>
+                        index++;
+                    }
+                </div>
+
+                <div class="carousel-inner">
+                    @foreach (var room in Model.RoomCategories)
+                    {
+                        var firstImage = room.RoomImages.FirstOrDefault(); // Get the first image
+                        if (firstImage != null)
+                        {
+                            <a class="room-link mx-3 my-2 text-decoration-none" style="color: black" asp-area="" asp-controller="Room" asp-action="ViewRoom" asp-route-id="@room.Id">
+                                <div class="carousel-item @(isActive ? "active" : "")">
+                                    <img src="/@(Common.ImageUploadPath + firstImage.ImagePath)" class="d-block w-50 rounded m-auto" alt="Room Image" loading="lazy">
+                                    <div class="card-body text-center">
+                                        <h5 class="card-title">@room.Type</h5>
+                                    </div>
+                                </div>
+                            </a>
+                            isActive = false;
+                        }
+                    }
+                </div>
+                <button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide="prev">
+                    <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                    <span class="visually-hidden">Previous</span>
+                </button>
+                <button class="carousel-control-next" type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide="next">
+                    <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                    <span class="visually-hidden">Next</span>
+                </button>
+            </div>
+        </div>
+    </section>
+}
+
+<section class="choose-us-section text-center py-5 bg-dark text-white">
+    <div class="container">
+        <h2 class="mb-3">WHY TO CHOOSE US?</h2>
+
+
+        <div class="video-container mb-5 w-100 text-center">
+            <iframe class="rounded w-100"
+                    src="https://www.youtube.com/embed/qemqQHaeCYo?autoplay=1&mute=1&loop=1&playlist=qemqQHaeCYo"
+                    title="YouTube video player"
+                    frameborder="0"
+                    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                    allowfullscreen
+                    style="height: 400px">
+            </iframe>
+        </div>
+
+
+        <div class="row g-3">
+            <div class="col-md-4">
+                <div class="word-container p-4 rounded text-center">
+                    <h4>Delicious Food</h4>
+                    <p>We offer a wide variety of mouth-watering cuisines made from fresh ingredients.</p>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="word-container p-4 rounded text-center">
+                    <h4>Relaxing Spa</h4>
+                    <p>Unwind with our premium spa services designed to rejuvenate your body and mind.</p>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="word-container p-4 rounded text-center">
+                    <h4>Luxurious Pool</h4>
+                    <p>Enjoy a dip in our state-of-the-art swimming pool with scenic surroundings.</p>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="word-container p-4 rounded text-center">
+                    <h4>Fine Dining</h4>
+                    <p>Experience exquisite dining with a wide range of gourmet dishes and beverages.</p>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="word-container p-4 rounded text-center">
+                    <h4>Cozy Restaurant</h4>
+                    <p>Relax and dine in our cozy and inviting restaurant ambiance inviting restaurant ambiance.</p>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="word-container p-4 rounded text-center">
+                    <h4>Beautiful Resort</h4>
+                    <p>Stay in our stunning resort with breathtaking views and top-notch amenities.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+</body>

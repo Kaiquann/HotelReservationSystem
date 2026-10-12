@@ -1,0 +1,75 @@
+﻿@model CreateRoomCategoryVm
+@{
+    ViewBag.Title = "Create Room category";
+}
+
+<section>
+    <div class="container my-5">
+        <h2 class="text-center mb-4">@ViewBag.Title</h2>
+        <form asp-area="Admin" asp-controller="Roomcategory" asp-action="Store" enctype="multipart/form-data">
+            <div class="card shadow-sm">
+                <div class="card-body">
+                    <div class="row mb-3">
+                        <label class="form-label fw-bold">Upload Room Images</label>
+                        <div class="d-flex flex-wrap gap-3" id="uploaded-images">
+                            <label class="upload">
+                                <input asp-for="Images" accept="image/jpeg,image/png" multiple hidden>
+                                <img src="/images/importImage.png" alt="Upload Image" class="img-thumbnail" loading="lazy" style="max-height: 150px; max-width: 150px;"/>
+                            </label>
+                        </div>
+                        <span asp-validation-for="Images" class="text-danger"></span>
+                    </div>
+
+                    <div class="row mb-3">
+                        <label asp-for="RoomCategoryType" class="col-md-3 col-form-label text-md-end fw-bold">Room Type :</label>
+                        <div class="col-md-9">
+                            <input asp-for="RoomCategoryType" class="form-control"/>
+                            <span asp-validation-for="RoomCategoryType" class="text-danger"></span>
+                        </div>
+                    </div>
+
+                    <div class="row mb-3">
+                        <label asp-for="Price" class="col-md-3 col-form-label text-md-end fw-bold">Price :</label>
+                        <div class="col-md-9">
+                            <input asp-for="Price" class="form-control"/>
+                            <span asp-validation-for="Price" class="text-danger"></span>
+                        </div>
+                    </div>
+
+                    <div class="row mb-3">
+                        <label asp-for="MaxPeople" class="col-md-3 col-form-label text-md-end fw-bold">Max People :</label>
+                        <div class="col-md-9">
+                            <input asp-for="MaxPeople" class="form-control" min="1"/>
+                            <span asp-validation-for="MaxPeople" class="text-danger"></span>
+                        </div>
+                    </div>
+
+                    <div class="row mb-3">
+                        <label asp-for="Description" class="col-md-3 col-form-label text-md-end fw-bold">Description :</label>
+                        <div class="col-md-9">
+                            <textarea asp-for="Description" class="form-control" rows="3"></textarea>
+                            <span asp-validation-for="Description" class="text-danger"></span>
+                        </div>
+                    </div>
+
+                    <div class="row mb-3">
+                        <label asp-for="IsAddBed" class="col-md-3 col-form-label text-md-end fw-bold">Add Bed :</label>
+                        <div class="col-md-9 d-flex align-items-center">
+                            <input asp-for="IsAddBed" type="checkbox" class="form-check-input me-2"/>
+                            <span asp-validation-for="IsAddBed" class="text-danger"></span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="card-footer text-end">
+                    <a asp-area="Admin" asp-controller="RoomCategory" asp-action="Index" class="btn btn-secondary">
+                        <i class="fas fa-times" aria-hidden="true"></i> Cancel
+                    </a>
+                    <button type="submit" class="btn btn-success" data-confirm>
+                        <i class="fas fa-check" aria-hidden="true"></i> Create
+                    </button>
+                </div>
+            </div>
+        </form>
+    </div>
+</section>

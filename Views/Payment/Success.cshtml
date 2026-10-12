@@ -1,0 +1,39 @@
+﻿@model ReceiptVm
+@{
+    ViewBag.Title = "Transaction Successful : " + Model.Transaction.TransactionNumber;
+}
+
+<section>
+    <div class="container my-5">
+        <h2 class="text-center mb-4">@ViewBag.Title</h2>
+        <div class="card">
+            <div class="card-body" data-printable-id="@Model.Transaction.TransactionNumber">
+                <partial name="Transaction/_TransactionHeadDetailsPartial" model="@Model.Transaction"/>
+                <partial name="Transaction/_TransactionBodyDetailsPartial" model="(@Model.Transaction, @Model.Order)"/>
+            </div>
+            <div class="card-footer">
+                <div class="d-flex justify-content-between align-items-center">
+                    <!-- Left-aligned button -->
+                    <div></div>
+
+                    <!-- Center-aligned buttons -->
+                    <div class="text-center">
+                        <button class="btn btn-primary print_btn" data-print-id="@Model.Transaction.TransactionNumber">
+                            <i class="fa fa-print me-2" aria-hidden="true"></i>Print Receipt
+                        </button>
+                        <a asp-area=""
+                           asp-controller="Transaction"
+                           asp-action="Receipt"
+                           asp-route-id="@Model.Transaction.TransactionNumber"
+                           class="btn btn-success">
+                            <i class="fa fa-arrow-right me-2" aria-hidden="true"></i>Continue
+                        </a>
+                    </div>
+
+                    <!-- Right-aligned button -->
+                    <div></div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>

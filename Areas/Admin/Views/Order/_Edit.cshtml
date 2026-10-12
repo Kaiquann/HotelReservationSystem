@@ -1,0 +1,101 @@
+﻿@model EditOrderVm
+
+<partial name="_SweetAlert"/>
+
+<table class="table table-bordered">
+    <tbody>
+    <tr>
+        <th>Order Number</th>
+        <td>:</td>
+        <td>@Model.Order.OrderNumber</td>
+    </tr>
+    <tr>
+        <th>Transaction Number</th>
+        <td>:</td>
+        <td>@Model.Order.TransactionNumber</td>
+    </tr>
+    <tr>
+        <th>Status</th>
+        <td>:</td>
+        <td>
+            <select asp-for="Status" asp-items="@Model.OrderStatusList" class="form-control">
+                <option value="">Select Status</option>
+            </select>
+            <span asp-validation-for="Status"></span>
+        </td>
+    </tr>
+    <tr>
+        <th>Service Charge</th>
+        <td>:</td>
+        <td>RM @Model.Order.ServiceCharge</td>
+    </tr>
+    <tr>
+        <th>SubTotal</th>
+        <td>:</td>
+        <td>RM @Model.Order.SubTotalAmount</td>
+    </tr>
+    <tr>
+        <th>Total Amount</th>
+        <td>:</td>
+        <td>RM @Model.Order.TotalAmount</td>
+    </tr>
+    <tr>
+        <th>Created At</th>
+        <td>:</td>
+        <td>@Model.Order.CreatedAt</td>
+    </tr>
+    <tr>
+        <th>Updated At</th>
+        <td>:</td>
+        <td>@Model.Order.UpdatedAt</td>
+    </tr>
+    </tbody>
+</table>
+
+<table class="table table-bordered">
+    <thead>
+    <tr>
+        <th>Room Bookings</th>
+        <th></th>
+        <th>Total</th>
+    </tr>
+    </thead>
+    <tbody>
+    @foreach (var booking in Model.Bookings)
+    {
+        <tr>
+            <td>
+                @booking.Room.RoomCategory.Type Room - @booking.RoomNumber
+                @if (booking.IsAddBed)
+                {
+                    <br/>
+                    <span class="text-success">Add Bed</span>
+                }
+                @if (booking.Room.RoomSetting.IsSmokingArea)
+                {
+                    <br/>
+                    <span class="text-success">Smoking Area</span>
+                }
+                @if (booking.Room.RoomSetting.IsLandscapeArea)
+                {
+                    <br/>
+                    <span class="text-success">Landscape Area</span>
+                }
+                @if (booking.Room.RoomSetting.IsCornerRoom)
+                {
+                    <br/>
+                    <span class="text-success">Corner Room</span>
+                }
+                <br/>
+                Check-In Date - @booking.CheckInDate
+                <br/>
+                Check-Out Date - @booking.CheckOutDate
+            </td>
+            <td>:</td>
+            <td>
+                RM @booking.TotalAmount.ToString("F2")
+            </td>
+        </tr>
+    }
+    </tbody>
+</table>

@@ -1,0 +1,49 @@
+﻿@model EditOrderVm
+@{
+    ViewBag.Title = "Editing Order : " + Model.Order.OrderNumber;
+}
+
+<section>
+    <div class="container my-5">
+        <h2 class="text-center mb-4">@ViewBag.Title</h2>
+
+        <div class="card">
+            <form data-ajax="true"
+                  data-ajax-update="#ajax-update-content"
+                  asp-action="Update"
+                  asp-route-id="@Model.Id"
+                  method="post">
+                <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+
+                <div class="card-body" id="ajax-update-content">
+                    <partial name="_Edit"/>
+                </div>
+
+                <div class="card-footer">
+                    <div class="d-flex justify-content-between align-items-center">
+                        <!-- Left-aligned button -->
+                        <div>
+                            <a asp-area="Admin" asp-controller="Order" asp-action="Index" class="btn btn-secondary">
+                                <i class="fas fa-arrow-left me-2" aria-hidden="true"></i> Go Back
+                            </a>
+                        </div>
+
+                        <!-- Center-aligned buttons -->
+                        <div class="text-center">
+                            <a asp-area="Admin" asp-controller="Transaction" asp-action="Receipt" asp-route-id="@Model.Order.TransactionNumber" class="btn btn-primary">
+                                <i class="fas fa-receipt me-2" aria-hidden="true"></i> View Receipt
+                            </a>
+                        </div>
+
+                        <!-- Right-aligned button -->
+                        <div>
+                            <button class="btn btn-success" data-confirm="Are you sure to save the changes?">
+                                <i class="fas fa-save me-2" aria-hidden="true"></i> Save Changes
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+</section>

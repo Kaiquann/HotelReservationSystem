@@ -1,0 +1,13 @@
+﻿<ul class="nav nav-pills mb-3">
+    <li class="nav-item text-center d-flex align-items-center justify-content-center">
+        <b>
+            <i class="fas fa-tasks" aria-hidden="true"></i> Filter
+        </b>
+    </li>
+    <li class="nav-item mx-2"></li>
+    <li class="nav-item d-flex align-items-center">
+        <select name="filter" asp-items="ViewBag.Status" class="form-select me-2" style="width: auto;" form="filter-form">
+            <option value="">Select Status</option>
+        </select>
+    </li>
+</ul>

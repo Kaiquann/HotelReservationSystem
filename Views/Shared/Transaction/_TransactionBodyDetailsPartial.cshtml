@@ -1,0 +1,41 @@
+﻿@model (Transaction Transaction, Order Order)
+
+<table class="table table-bordered">
+    <tbody>
+    <tr>
+        <td>Transaction Number</td>
+        <td>:</td>
+        <td>@Model.Transaction.TransactionNumber</td>
+    </tr>
+    <tr>
+        <td>Order Number</td>
+        <td>:</td>
+        <td>@Model.Order.OrderNumber</td>
+    </tr>
+    <tr>
+        <td>Payment method</td>
+        <td>:</td>
+        <td>@Model.Transaction.PaymentMethod</td>
+    </tr>
+    <tr>
+        <td>Payment Status</td>
+        <td>:</td>
+        <td>@EnumHelper.GetDisplayName(Model.Transaction.Status)</td>
+    </tr>
+    <tr>
+        <td>Subtotal</td>
+        <td>:</td>
+        <td>RM @Model.Order.SubTotalAmount</td>
+    </tr>
+    <tr>
+        <td>Service Charge @Model.Order.ServiceChargeRate %</td>
+        <td>:</td>
+        <td>RM @Model.Order.ServiceCharge</td>
+    </tr>
+    <tr>
+        <td>Total Amount</td>
+        <td>:</td>
+        <td>RM @Model.Transaction.TotalAmount</td>
+    </tr>
+    </tbody>
+</table>

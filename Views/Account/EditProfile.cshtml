@@ -1,0 +1,15 @@
+﻿@model ProfileVm
+@{
+    ViewBag.Title = "Edit Profile";
+}
+
+<section>
+    <div class="container my-5">
+        <h2 class="text-center mb-4">@ViewBag.Title</h2>
+        <div class="card">
+            <div class="card-body" id="ajax-update-content">
+                <partial name="_EditProfile" model="@Model"/>
+            </div>
+        </div>
+    </div>
+</section>

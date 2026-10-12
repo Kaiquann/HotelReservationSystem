@@ -1,0 +1,37 @@
+﻿@model IPagedList<Room>
+
+@{
+    ViewBag.Title = "Manage Room";
+}
+
+<section>
+    <div class="container my-5">
+        <h2 class="text-center mb-4">@ViewBag.Title</h2>
+
+
+        <div class="d-flex justify-content-start mb-3 gap-2">
+            <a asp-controller="Room" asp-action="Create" class="btn btn-primary">
+                <i class="fas fa-plus me-2"></i> Create
+            </a>
+            <a asp-controller="Room" asp-action="Deleted" class="btn btn-secondary">
+                <i class="fas fa-trash me-2"></i> Deleted Rooms
+            </a>
+
+            <button type="button"
+                    data-ajax="true"
+                    data-ajax-update="#table-ajax"
+                    data-message="Are you sure to delete all the selected Rooms?"
+                    data-action="/Admin/Room/Delete"
+                    class="btn btn-danger select-submit-btn ms-auto"
+                    form="select-form">
+                <i class="fas fa-trash-alt me-2"></i> Delete
+            </button>
+        </div>
+
+        <partial name="_FilterBar"/>
+
+        <div class="table-responsive" id="table-ajax">
+            <partial name="_Index"/>
+        </div>
+    </div>
+</section>

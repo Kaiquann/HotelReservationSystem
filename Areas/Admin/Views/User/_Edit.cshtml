@@ -1,0 +1,141 @@
+﻿@model EditUserVm
+
+<partial name="_SweetAlert"/>
+<partial name="_ActionEditForm"/>
+
+<form data-ajax="true"
+      data-ajax-update="#ajax-update-content"
+      asp-action="Update"
+      asp-route-id="@Model.Id"
+      method="post"
+      enctype="multipart/form-data">
+    <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+    <table class="table table-bordered">
+        <tbody>
+        <tr>
+            <td colspan="3">
+                <label class="upload">
+                    <input asp-for="ProfileImage" accept="image/jpeg,image/png" hidden>
+                    <partial name="User/_ProfileImagePartial" model="@Model.ProfileImageUrl"/>
+                    <span></span>
+                </label>
+                <span asp-validation-for="ProfileImage" class="text-danger"></span>
+            </td>
+        </tr>
+        <tr>
+            <th>Id</th>
+            <td>:</td>
+            <td>@Model.Id</td>
+        </tr>
+        <tr>
+            <th>First name</th>
+            <td>:</td>
+            <td>
+                <input asp-for="FirstName" class="form-control" data-trim/>
+                <span asp-validation-for="FirstName" class="text-danger"></span>
+            </td>
+        </tr>
+        <tr>
+            <th>Last name</th>
+            <td>:</td>
+            <td>
+                <input asp-for="LastName" class="form-control" data-trim/>
+                <span asp-validation-for="LastName" class="text-danger"></span>
+            </td>
+        </tr>
+        <tr>
+            <th>Username</th>
+            <td>:</td>
+            <td>
+                <input asp-for="UserName" class="form-control" data-trim/>
+                <span asp-validation-for="UserName" class="text-danger"></span>
+            </td>
+        </tr>
+        <tr>
+            <th>Email</th>
+            <td>:</td>
+            <td>
+                <input asp-for="Email" class="form-control" data-trim/>
+                <span asp-validation-for="Email" class="text-danger"></span>
+            </td>
+        </tr>
+        <tr>
+            <th>Phone number</th>
+            <td>:</td>
+            <td>
+                <input asp-for="PhoneNumber" value="@Model.PhoneNumber" class="form-control" placeholder="Phone Number" data-trim/>
+                <span asp-validation-for="PhoneNumber" class="text-danger"></span>
+            </td>
+        </tr>
+        <tr>
+            <th>Role</th>
+            <td>:</td>
+            <td>
+                <select asp-for="Role" asp-items="Model.Roles" class="form-control">
+                    <option value="">Select Role</option>
+                </select>
+                <span asp-validation-for="Role"></span>
+            </td>
+        </tr>
+        <tr>
+            <th>Is Blocked?</th>
+            <td>:</td>
+            <td>@(Model.IsBlocked == false ? "No" : "Yes")</td>
+        </tr>
+        <tr>
+            <th>Is Deleted?</th>
+            <td>:</td>
+            <td>@(Model.IsDeleted == 0 ? "No" : "Yes")</td>
+        </tr>
+        <tr>
+            <th>Created At</th>
+            <td>:</td>
+            <td>@Model.CreatedAt</td>
+        </tr>
+        <tr>
+            <th>Updated At</th>
+            <td>:</td>
+            <td>@Model.UpdatedAt</td>
+        </tr>
+        </tbody>
+        <tfoot>
+        <tr>
+            <td colspan="3">
+                <div class="d-flex justify-content-between align-items-center">
+                    <!-- Left-aligned button -->
+                    <div>
+                        <a asp-area="Admin" asp-controller="User" asp-action="Index" class="btn btn-secondary">
+                            <i class="fas fa-arrow-left me-2" aria-hidden="true"></i> Go Back
+                        </a>
+                    </div>
+
+                    <!-- Center-aligned buttons -->
+                    <div class="d-flex justify-content-center align-items-center gap-1 text-center">
+                        <partial name="_ActionButtonEdit" model="@Model"/>
+
+                        <button class="btn btn-danger"
+                                data-confirm="Are you sure to remove this user profile image?"
+                                form="removeProfileImageForm">
+                            <i class="fas fa-save me-2" aria-hidden="true"></i> Remove Profile Image
+                        </button>
+
+                        <button
+                            class="btn btn-danger"
+                            data-confirm="Are you sure to send reset password link to this users?"
+                            form="sendResetPasswordLinkForm">
+                            <i class="fas fa-envelope me-2" aria-hidden="true"></i> Send Reset Password Link
+                        </button>
+                    </div>
+
+                    <!-- Right-aligned button -->
+                    <div>
+                        <button class="btn btn-success" data-confirm>
+                            <i class="fas fa-save me-2" aria-hidden="true"></i> Save Changes
+                        </button>
+                    </div>
+                </div>
+            </td>
+        </tr>
+        </tfoot>
+    </table>
+</form>

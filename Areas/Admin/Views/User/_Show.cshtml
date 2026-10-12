@@ -1,0 +1,102 @@
+﻿@model User
+
+<div class="card-body">
+    <table class="table table-bordered">
+        <thead>
+        <tr>
+            <td colspan="3">
+                <partial name="User/_ProfileImagePartial" model="@Model.ProfileImageUrl"/>
+            </td>
+        </tr>
+        </thead>
+        <tbody>
+        <tr>
+            <th>Id</th>
+            <td>:</td>
+            <td>@Model.Id</td>
+        </tr>
+        <tr>
+            <th>First name</th>
+            <td>:</td>
+            <td>@Model.FirstName</td>
+        </tr>
+        <tr>
+            <th>Last name</th>
+            <td>:</td>
+            <td>@Model.LastName</td>
+        </tr>
+        <tr>
+            <th>Username</th>
+            <td>:</td>
+            <td>@Model.UserName</td>
+        </tr>
+        <tr>
+            <th>Email</th>
+            <td>:</td>
+            <td>@Model.Email</td>
+        </tr>
+        <tr>
+            <th>Phone number</th>
+            <td>:</td>
+            <td>@Model.PhoneNumber</td>
+        </tr>
+        <tr>
+            <th>Role</th>
+            <td>:</td>
+            <td>@Model.Role</td>
+        </tr>
+        <tr>
+            <th>Is Blocked?</th>
+            <td>:</td>
+            <td>@(Model.IsBlocked == false ? "No" : "Yes")</td>
+        </tr>
+        <tr>
+            <th>Is Deleted?</th>
+            <td>:</td>
+            <td>@(Model.IsDeleted == 0 ? "No" : "Yes")</td>
+        </tr>
+        <tr>
+            <th>Created At</th>
+            <td>:</td>
+            <td>@Model.CreatedAt</td>
+        </tr>
+        <tr>
+            <th>Updated At</th>
+            <td>:</td>
+            <td>@Model.UpdatedAt</td>
+        </tr>
+        </tbody>
+        <tfoot>
+        <tr>
+            <td colspan="3">
+                <div class="d-flex justify-content-between align-items-center">
+                    <!-- Left-aligned button -->
+                    <div>
+                        <a asp-area="Admin" asp-controller="User" asp-action="Index" class="btn btn-secondary">
+                            <i class="fas fa-arrow-left me-2" aria-hidden="true"></i> Go Back
+                        </a>
+                    </div>
+
+                    <!-- Center-aligned buttons -->
+                    <div class="d-flex justify-content-center align-items-center gap-1 text-center">
+                        <partial name="_ActionButtonShow" model="@Model"/>
+
+                        <button data-post="/Admin/User/SendResetPasswordLink?id=@Model.Id"
+                                data-confirm="Are you sure to send reset password link to this user?"
+                                class="btn btn-danger">
+                            <i class="fas fa-envelope me-2" aria-hidden="true"></i> Send Reset Password Link
+                        </button>
+                    </div>
+
+                    <!-- Right-aligned button -->
+                    <div>
+                        <a asp-area="Admin" asp-controller="User" asp-action="Edit" asp-route-id="@Model.Id" class="btn btn-primary">
+                            <i class="fas fa-edit me-2" aria-hidden="true"></i> Edit
+                        </a>
+                    </div>
+                </div>
+            </td>
+        </tr>
+        </tfoot>
+    </table>
+</div>

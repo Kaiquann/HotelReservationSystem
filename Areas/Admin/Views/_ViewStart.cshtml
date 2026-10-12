@@ -1,0 +1,109 @@
+﻿@using HotelReservationSystem
+@{
+    Layout = "/Views/Shared/_Layout.cshtml";
+    ViewBag.Title = "Admin Dashboard";
+}
+
+<style>
+    body {
+        font-family: Arial, sans-serif;
+        margin: 0;
+    }
+
+    .section { display: flex; }
+
+    .sidebar {
+        background-color: #343a40;
+        color: #fff;
+        height: 100%;
+        overflow-y: auto;
+        position: fixed;
+        top: 0;
+        transition: transform 0.3s ease-in-out;
+        width: 250px;
+        z-index: 900;
+    }
+
+    .sidebar.hidden { display: none; }
+
+    .sidebar h4 {
+        background-color: #000000;
+        border-bottom: 1px solid #495057;
+        margin: 0;
+        padding: 15px;
+        text-align: center;
+    }
+
+    .sidebar a {
+        color: #adb5bd;
+        display: block;
+        padding: 10px 20px;
+        text-decoration: none;
+        transition: all 0.3s;
+    }
+
+    .sidebar a:hover,
+    .sidebar a.active {
+        background-color: #495057;
+        color: #fff;
+    }
+
+    .toggle-button {
+        background-color: #495057;
+        border: none;
+        border-radius: 5px;
+        color: #fff;
+        cursor: pointer;
+        font-size: 16px;
+        left: 10px;
+        margin-top: 80px;
+        padding: 10px;
+        position: fixed;
+        top: 10px;
+        transition: transform 0.3s ease-in-out;
+        z-index: 1000;
+    }
+</style>
+
+<section class="section">
+    <button class="toggle-button" onclick="toggleSidebar()" id="toggleButton">☰</button>
+    <div class="sidebar hidden" id="adminSidebar">
+        <h4 style="margin-top: 140px">Admin Dashboard</h4>
+        <a asp-area="Admin" asp-controller="User" asp-action="Index" class="@Html.IsActive("User")">
+            <i class="fas fa-user-friends me-2" aria-hidden="true"></i> Manage Users
+        </a>
+        <a asp-area="Admin" asp-controller="Order" asp-action="Index" class="@Html.IsActive("Order")">
+            <i class="fas fa-record-vinyl me-2" aria-hidden="true"></i> Manage Orders
+        </a>
+        <a asp-area="Admin" asp-controller="Booking" asp-action="Index" class="@Html.IsActive("Booking")">
+            <i class="fas fa-calendar-alt me-2" aria-hidden="true"></i> Manage Bookings
+        </a>
+        <a asp-area="Admin" asp-controller="Transaction" asp-action="Index" class="@Html.IsActive("Transaction")">
+            <i class="fas fa-credit-card me-2" aria-hidden="true"></i> Manage Transactions
+        </a>
+        <a asp-area="Admin" asp-controller="LoginLog" asp-action="Index" class="@Html.IsActive("LoginLog")">
+            <i class="fas fa-sign-in-alt me-2" aria-hidden="true"></i> Manage Login Logs
+        </a>
+        <a asp-area="Admin" asp-controller="Room" asp-action="Index" class="@Html.IsActive("Room")">
+            <i class="fas fa-hotel me-2" aria-hidden="true"></i> Manage Room
+        </a>
+        <a asp-area="Admin" asp-controller="RoomCategory" asp-action="Index" class="@Html.IsActive("RoomCategory")">
+            <i class="fas fa-th-list me-2" aria-hidden="true"></i> Manage Room Category
+        </a>
+        <a asp-area="Admin" asp-controller="Chart" asp-action="Index" class="@Html.IsActive("Chart")">
+            <i class="fa-solid fa-chart-simple"></i> Chart
+        </a>
+    </div>
+</section>
+
+<script>
+    function toggleSidebar() {
+        const sidebar = document.getElementById('adminSidebar');
+        const toggleButton = document.getElementById('toggleButton');
+        const isHidden = sidebar.classList.toggle('hidden');
+
+        toggleButton.textContent = isHidden ? "|||" : "☰";
+    }
+
+
+</script>

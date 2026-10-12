@@ -1,0 +1,80 @@
+﻿@model EditRoomVm
+
+<section>
+    <div class="container my-5">
+        <h2 class="text-center mb-4 text-primary">Edit Room</h2>
+        <div class="card shadow-sm">
+            <div class="card-body">
+                <form asp-area="Admin" asp-controller="Room" asp-action="Update" method="post">
+                    <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                    <input type="hidden" asp-for="Id"/>
+
+                    <div class="mb-4">
+                        <h5 class="fw-bold">Room Category</h5>
+                        <div class="border p-3 rounded bg-light">
+                            @foreach (var roomCategory in Model.RoomCategoryList)
+                            {
+                                <div class="form-check mb-2">
+                                    <input type="radio" class="form-check-input"
+                                           name="roomCategoryId"
+                                           value="@roomCategory.Id"
+                                           id="category-@roomCategory.Id"
+                                           @(roomCategory.Id == Model.RoomCategoryId ? "checked" : "")/>
+
+                                    <label class="form-check-label" for="category-@roomCategory.Id">
+                                        @roomCategory.Type
+                                    </label>
+                                </div>
+                            }
+                            <span asp-validation-for="RoomCategoryId" class="text-danger small"></span>
+                        </div>
+                    </div>
+
+                    <div class="mb-4">
+                        <h5 class="fw-bold">Room Setting</h5>
+                        <div class="border p-3 rounded bg-light">
+                            @foreach (var roomSetting in Model.RoomSettingList)
+                            {
+                                <div class="form-check mb-2 d-flex align-items-center">
+                                    <input type="radio" class="form-check-input"
+                                           name="roomSettingId"
+                                           value="@roomSetting.Id"
+                                           id="setting-@roomSetting.Id"
+                                           @(roomSetting.Id == Model.RoomSettingId ? "checked" : "")/>
+
+                                    <label class="form-check-label ms-2" for="setting-@roomSetting.Id">
+                                        @if (roomSetting.IsSmokingArea)
+                                        {
+                                            <i class="fa fa-smoking text-danger me-2"></i>
+                                            <span>Smoking Area</span>
+                                        }
+                                        @if (roomSetting.IsLandscapeArea)
+                                        {
+                                            <i class="fa fa-tree text-success me-2"></i>
+                                            <span>Landscape View</span>
+                                        }
+                                        @if (roomSetting.IsCornerRoom)
+                                        {
+                                            <i class="fa fa-building text-secondary ms-4 me-2"></i>
+                                            <span class="ms-2">Corner Room</span>
+                                        }
+                                    </label>
+                                </div>
+                            }
+                            <span asp-validation-for="RoomSettingId" class="text-danger small"></span>
+                        </div>
+                    </div>
+
+                    <div class="text-end">
+                        <a asp-area="Admin" asp-controller="Room" asp-action="Index" class="btn btn-outline-secondary me-2">
+                            <i class="fa fa-arrow-left"></i> Cancel
+                        </a>
+                        <button type="submit" class="btn btn-success">
+                            <i class="fa fa-save"></i> Update
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</section>

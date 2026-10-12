@@ -1,0 +1,109 @@
+﻿@model User;
+@{
+    ViewBag.Title = "Profile";
+}
+
+<section>
+    <div class="container my-5">
+        <h2 class="text-center mb-4">@ViewBag.Title</h2>
+        <div class="card">
+            <div class="card-body">
+                <table class="table table-bordered">
+                    <thead>
+                    <tr>
+                        <td colspan="3">
+                            <partial name="User/_ProfileImagePartial" model="@Model.ProfileImageUrl"/>
+                        </td>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr>
+                        <th>First name</th>
+                        <td>:</td>
+                        <td>@Model.FirstName</td>
+                    </tr>
+                    <tr>
+                        <th>Last name</th>
+                        <td>:</td>
+                        <td>@Model.LastName</td>
+                    </tr>
+                    <tr>
+                        <th>Username</th>
+                        <td>:</td>
+                        <td>@Model.UserName</td>
+                    </tr>
+                    <tr>
+                        <th>Email</th>
+                        <td>:</td>
+                        <td>@Model.Email</td>
+                    </tr>
+                    <tr>
+                        <th>Phone number</th>
+                        <td>:</td>
+                        <td>@Model.PhoneNumber</td>
+                    </tr>
+                    </tbody>
+                    <tfoot>
+                    <tr>
+                        <td colspan="3">
+                            <div class="d-flex justify-content-between align-items-center">
+                                <!-- Left-aligned button -->
+                                <div></div>
+
+                                <!-- Center-aligned buttons -->
+                                <div class="text-center">
+                                    <a asp-area="" asp-controller="Account" asp-action="EditProfile" class="btn btn-primary">
+                                        <i class="fas fa-edit me-2" aria-hidden="true"></i> Edit Profile
+                                    </a>
+                                    <a asp-area="" asp-controller="Account" asp-action="ChangeEmail" class="btn btn-danger">
+                                        <i class="fas fa-envelope me-2" aria-hidden="true"></i> Change Email
+                                    </a>
+                                    <a asp-area="" asp-controller="Account" asp-action="ChangePassword" class="btn btn-danger">
+                                        <i class="fas fa-key me-2" aria-hidden="true"></i> Change Password
+                                    </a>
+                                </div>
+
+                                <!-- Right-aligned button -->
+                                <div></div>
+                            </div>
+                        </td>
+                    </tr>
+                    </tfoot>
+                </table>
+            </div>
+        </div>
+    </div>
+</section>
+
+<section>
+    <div class="container my-5">
+        <h2 class="text-center mb-4">Security</h2>
+        <div class="card">
+            <div class="card-body">
+                <table class="table table-bordered">
+                    <tbody>
+                    <tr>
+                        <th>Multi Factor Authentication</th>
+                        <td>:</td>
+                        <td>@(Model.IsMfaEnabled ? "Enabled" : "Disabled")</td>
+                        <td>
+                            @if (Model.IsMfaEnabled)
+                            {
+                                <a asp-area="" asp-controller="Account" asp-action="DisableMfa" class="btn btn-primary">
+                                    <i class="fas fa-lock me-2" aria-hidden="true"></i> Disable
+                                </a>
+                            }
+                            else
+                            {
+                                <a asp-area="" asp-controller="Account" asp-action="EnableMfa" class="btn btn-primary">
+                                    <i class="fas fa-unlock me-2" aria-hidden="true"></i> Enable
+                                </a>
+                            }
+                        </td>
+                    </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</section>

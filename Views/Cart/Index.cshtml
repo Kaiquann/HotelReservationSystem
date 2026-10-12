@@ -1,0 +1,125 @@
+﻿@model CartVm
+@{
+    ViewBag.Title = "Cart";
+}
+
+<body>
+<style>
+    h1 {
+        color: #333;
+        font-size: 36px;
+        text-transform: uppercase;
+    }
+
+    th, td {
+        font-size: 16px;
+        vertical-align: middle;
+    }
+
+    .cart-item {
+        align-items: center;
+        border-bottom: 1px solid #ddd;
+        display: flex;
+        justify-content: space-between;
+        padding: 20px 0;
+    }
+
+    .cart-item img {
+        height: 150px;
+        object-fit: cover;
+        width: 150px;
+    }
+
+    .cart-item-details {
+        flex: 2;
+        padding: 0 15px;
+    }
+
+    .cart-item-actions {
+        align-items: center;
+        display: flex;
+    }
+
+    .cart-item-actions form { margin: 0 10px; }
+
+    .btn-outline-secondary {
+        border-color: #ddd;
+        color: #555;
+    }
+
+    .btn-outline-secondary:hover {
+        background-color: #ddd;
+        color: #333;
+    }
+
+    .order-summary {
+        background-color: #f9f9f9;
+        border: 1px solid #ddd;
+        padding: 20px;
+    }
+
+    .order-summary h5 { font-weight: bold; }
+
+    .order-summary .text-danger { color: #e74c3c; }
+
+    .cart-item:has(input:checked) { background-color: #c9c7c7; }
+
+    .shadow-line {
+        background: linear-gradient(to right, rgba(0, 0, 0, 0.1), rgba(0, 0, 0, 0.3), rgba(0, 0, 0, 0.1));
+        box-shadow: 0px 2px 5px rgba(0, 0, 0, 0.2);
+        height: 2px;
+        margin-bottom: 20px;
+        margin-top: -10px;
+    }
+
+    .cart-rap { width: 80%; }
+
+</style>
+
+<form action="/Payment/BuyWithCart" method="post" id="buyWithCartForm"></form>
+
+<div class="cart-rap container-fluid my-5 p-5">
+    <h1 class="fw-bold mb-4">Shopping Cart</h1>
+    <div class="shadow-line"></div>
+
+    <div class="row" id="table-ajax">
+        <partial name="_Index"/>
+    </div>
+</div>
+
+
+</body>
+
+@section foot {
+    <script>
+        function calculateSubtotal() {
+            let subtotal = 0;
+            let serviceCharge = 0;
+            let totalPrice = 0;
+
+            $(".cart-item input[type='checkbox']:checked").each(function() {
+                const price = parseFloat($(this).closest(".cart-item").find(".item-price").data("price"));
+                const totalDays = parseInt($(this).closest(".cart-item").find(".item-total-days").data("total-days"));
+                const quantity = parseInt($(this).closest(".cart-item").find(".item-quantity").data("quantity"));
+                const addBedPrice = parseFloat($(this).closest(".cart-item").find(".addbed-price").data("addbed-price")) || 0;
+                const cornerPrice = parseFloat($(this).closest(".cart-item").find(".corner-price").data("corner-price")) || 0;
+                subtotal += ((price + addBedPrice + cornerPrice) * totalDays) * quantity;
+                serviceCharge = subtotal * (@PaymentInit.ServiceCharge / 100);
+                totalPrice = subtotal + serviceCharge;
+            });
+
+            $(".subtotal").text(subtotal.toFixed(2));
+            $(".serviceCharge").text(serviceCharge.toFixed(2));
+            $(".totalPrice").text(totalPrice.toFixed(2));
+
+            const checkoutButton = $(".checkOutBtn");
+            if (totalPrice !== 0) {
+                checkoutButton.prop("disabled", false);
+            } else {
+                checkoutButton.prop("disabled", true);
+            }
+        }
+
+        $(document).on("change", ".cart-item input[type='checkbox']", calculateSubtotal);
+    </script>
+}

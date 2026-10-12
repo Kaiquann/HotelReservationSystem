@@ -1,0 +1,62 @@
+﻿@model ReceiptVm
+@{
+    ViewBag.Title = "Transaction : " + Model.Transaction.TransactionNumber;
+}
+
+<form data-ajax="true"
+      data-ajax-update="#ajax-sweetalert"
+      asp-area="Admin"
+      asp-controller="Transaction"
+      asp-action="SendReceipt"
+      asp-route-id="@Model.Transaction.TransactionNumber"
+      method="post"
+      id="sendReceiptForm">
+</form>
+
+<section>
+    <div class="container my-5">
+        <h2 class="text-center mb-4">@ViewBag.Title</h2>
+        <div class="card">
+            <div class="card-body" data-printable-id="@Model.Transaction.TransactionNumber">
+                <partial name="Transaction/_TransactionHeadDetailsPartial" model="@Model.Transaction"/>
+                <partial name="Transaction/_TransactionBodyDetailsPartial" model="(@Model.Transaction, @Model.Order)"/>
+                <partial name="Transaction/_BookingsPartial" model="@Model.Bookings"/>
+            </div>
+
+            <div class="card-footer">
+                <div class="d-flex justify-content-between align-items-center">
+                    <!-- Left-aligned button -->
+                    <div></div>
+
+                    <!-- Center-aligned buttons -->
+                    <div class="text-center">
+                        <a asp-area="Admin" asp-controller="Transaction" asp-action="Index" class="btn btn-secondary">
+                            <i class="fas fa-arrow-left me-2" aria-hidden="true"></i> Go Back
+                        </a>
+
+                        <a asp-area="Admin" asp-controller="Order" asp-action="Show" asp-route-id="@Model.Order.OrderNumber" class="btn btn-primary">
+                            <i class="fas fa-eye me-2" aria-hidden="true"></i> View Order
+                        </a>
+
+                        <button class="btn btn-primary print_btn" data-print-id="@Model.Transaction.TransactionNumber">
+                            <i class="fas fa-print me-2" aria-hidden="true"></i> Print Receipt
+                        </button>
+
+                        @if (Model.Transaction.User.IsDeleted < 2)
+                        {
+                            <button id="send_email"
+                                    class="btn btn-success"
+                                    data-confirm="Are you sure to send receipt to this user email?"
+                                    form="sendReceiptForm">
+                                <i class="fas fa-envelope me-2" aria-hidden="true"></i> Send Receipt To Email
+                            </button>
+                        }
+                    </div>
+
+                    <!-- Right-aligned button -->
+                    <div></div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>

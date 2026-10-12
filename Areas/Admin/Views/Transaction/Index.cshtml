@@ -1,0 +1,15 @@
+﻿@{
+    ViewBag.Title = "Manage Transactions";
+}
+
+<section>
+    <div class="container my-5">
+        <h2 class="text-center mb-4">@ViewBag.Title</h2>
+
+        <partial name="Transaction/_FilterBar"/>
+
+        <div id="table-ajax">
+            <partial name="_Index"/>
+        </div>
+    </div>
+</section>

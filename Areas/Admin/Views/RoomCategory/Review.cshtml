@@ -1,0 +1,95 @@
+﻿@model IPagedList<RoomCategoryReview>
+@{
+    ViewBag.Title = "Manage Room categories review";
+}
+
+<form action="" method="post" id="select-form"></form>
+
+<section>
+    <div class="container my-5">
+        <h2 class="text-center mb-4">@ViewBag.Title</h2>
+
+        <ul class="nav nav-pills mb-3">
+            <li class="nav-item">
+                <a asp-controller="RoomCategory" asp-action="Index" class="btn btn-success d-flex align-items-center">
+                    <i class="fas fa-arrow-left me-2" aria-hidden="true"></i> Go Back
+                </a>
+            </li>
+        </ul>
+
+        <div class="my-3">
+            <button type="submit"
+                    name="status"
+                    value="@RoomCategoryReviewStatus.Approved"
+                    class="btn btn-primary select-submit-btn ms-auto" form="select-form"
+                    data-message="Are you sure to Approved all the selected Room Categories review?"
+                    data-action="/Admin/RoomCategory/UpdateReviewStatus">
+                <i class="fa-regular fa-thumbs-up"></i> Approved
+            </button>
+
+            <button type="submit"
+                    name="status"
+                    value="@RoomCategoryReviewStatus.Rejected"
+                    class="btn btn-danger select-submit-btn ms-auto" form="select-form"
+                    data-message="Are you sure to Reject all the selected Room Categories review?"
+                    data-action="/Admin/RoomCategory/UpdateReviewStatus">
+                <i class="fas fa-trash-alt me-2"></i> Reject
+            </button>
+        </div>
+
+        @{
+            string[] fields =
+            [
+                "", "Id", "UserName", "RoomCategory",
+                "Message", "Rating", "CreateAt", "UpdateAt"
+            ];
+        }
+
+        <partial name="_SweetAlert"/>
+        <partial name="Table/_FilterFormPartial"/>
+        <partial name="Table/_SearchBarPartial"/>
+        <partial name="Table/_CountRecordPartial" model="@Model"/>
+        <table class="table table-bordered">
+            <partial name="Table/_HeaderPartial" model="@fields"/>
+            <tbody>
+            @foreach (var roomCategoryReview in Model)
+            {
+                <tr data-checkable>
+                    <td>
+                        <input type="checkbox" name="ids" value="@roomCategoryReview.Id" form="select-form" class="select-box"/>
+                    </td>
+                    <td>@roomCategoryReview.Id</td>
+                    <td>@roomCategoryReview.User.UserName</td>
+                    <td>@roomCategoryReview.RoomCategory.Type</td>
+                    <td>@roomCategoryReview.Message</td>
+                    <td>@roomCategoryReview.Rating</td>
+                    <td>@roomCategoryReview.CreatedAt</td>
+                    <td>@roomCategoryReview.UpdatedAt</td>
+                    <td>
+                        <form asp-area="Admin"
+                              asp-controller="RoomCategory"
+                              asp-action="UpdateReviewStatus"
+                              method="post">
+                            <input type="hidden" name="ids" value="@roomCategoryReview.Id"/>
+                            <button name="status"
+                                    value="@RoomCategoryReviewStatus.Approved"
+                                    class="btn btn-primary ms-auto"
+                                    data-confirm="Are you sure to Approved all the selected Room Categories review?">
+                                <i class="fa-regular fa-thumbs-up"></i> Approved
+                            </button>
+
+                            <button name="status"
+                                    value="@RoomCategoryReviewStatus.Rejected"
+                                    class="btn btn-danger ms-auto"
+                                    data-confirm="Are you sure to Reject this Room Categories review?">
+                                <i class="fas fa-trash-alt me-2"></i> Reject
+                            </button>
+                        </form>
+                    </td>
+                </tr>
+            }
+            </tbody>
+        </table>
+        <partial name="Table/_FooterPartial" model="@Model"/>
+    </div>
+</section>

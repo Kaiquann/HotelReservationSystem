@@ -1,0 +1,47 @@
+﻿@model LoginVm;
+@inject ICfCaptchaService CfCaptchaService
+@{
+    ViewBag.Title = "Login";
+}
+
+<section>
+    <div class="container my-5">
+        <h2 class="text-center mb-4">@ViewBag.Title</h2>
+        <form asp-action="Index" method="post">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <input type="hidden" name="returnUrl" value="@ViewBag.ReturnUrl"/>
+            <div class="mb-3">
+                <label asp-for="Email" class="form-label"></label>
+                <input asp-for="Email" class="form-control"/>
+                <span asp-validation-for="Email" class="text-danger"></span>
+            </div>
+            <div class="mb-3">
+                <label asp-for="Password" class="form-label"></label>
+                <input asp-for="Password" class="form-control"/>
+                <span asp-validation-for="Password" class="text-danger"></span>
+            </div>
+            <div class="float-end">
+                <a asp-controller="RecoveryMfa" asp-action="Index" class="text-decoration-none">
+                    <i class="fas fa-key" aria-hidden="true"></i> Recovery MFA?
+                </a>
+                <a asp-controller="ForgotPassword" asp-action="Index" class="text-decoration-none">
+                    <i class="fas fa-unlock-alt" aria-hidden="true"></i> Forgot password?
+                </a>
+            </div>
+            <div class="form-check mb-3">
+                <label class="form-check-label">
+                    <input asp-for="RememberMe" class="form-check-input"/>
+                    <label asp-for="RememberMe" class="form-label"></label>
+                </label>
+            </div>
+            <input type="submit" value="Login" class="btn btn-success w-100 p-2" data-confirm/>
+            <p class="text-center mt-2">
+                Don't have an account?
+                <a asp-controller="Register" asp-action="Index" class="text-decoration-none">
+                    <i class="fas fa-user-plus" aria-hidden="true"></i> Register
+                </a>
+            </p>
+            @CfCaptchaService.GetCaptchaHtml()
+        </form>
+    </div>
+</section>

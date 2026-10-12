@@ -1,0 +1,107 @@
+﻿@model Booking
+
+<partial name="_SweetAlert"/>
+
+<div class="card-body">
+    <table class="table table-bordered">
+        <thead>
+        <tr>
+            <td colspan="3">
+                @foreach (RoomImage roomCategoryRoomImage in Model.Room.RoomCategory.RoomImages)
+                {
+                    <img src="/@Common.ImageUploadPath/@roomCategoryRoomImage.ImagePath" alt="Image"
+                         class="img-thumbnail" loading="lazy" style="max-height: 200px; max-width: 200px;"/>
+                }
+            </td>
+        </tr>
+        </thead>
+        <tbody>
+        <tr>
+            <th>Id</th>
+            <td>:</td>
+            <td>@Model.Id</td>
+        </tr>
+        <tr>
+            <th>Order Number</th>
+            <td>:</td>
+            <td>@Model.Order.OrderNumber</td>
+        </tr>
+        <tr>
+            <th>Room Number</th>
+            <td>:</td>
+            <td>@Model.RoomNumber</td>
+        </tr>
+        <tr>
+            <th>Room Type</th>
+            <td>:</td>
+            <td>@Model.Room.RoomCategory.Type</td>
+        </tr>
+        <tr>
+            <th>Status</th>
+            <td>:</td>
+            <td>@EnumHelper.GetDisplayName(Model.Status)</td>
+        </tr>
+        <tr>
+            <th>Is Add Bed?</th>
+            <td>:</td>
+            <td>@(Model.IsAddBed ? "Yes" : "No")</td>
+        </tr>
+        <tr>
+            <th>Preference</th>
+            <td>:</td>
+            <td>@(Model.Room.RoomSetting.GetRoomPreference())</td>
+        </tr>
+        <tr>
+            <th>Is Corner Room?</th>
+            <td>:</td>
+            <td>@(Model.Room.RoomSetting.IsCornerRoom ? "Yes" : "No")</td>
+        </tr>
+        <tr>
+            <th>Check In Date</th>
+            <td>:</td>
+            <td>@Model.CheckInDate</td>
+        </tr>
+        <tr>
+            <th>Check Out Date</th>
+            <td>:</td>
+            <td>@Model.CheckOutDate</td>
+        </tr>
+        <tr>
+            <th>When Check In</th>
+            <td>:</td>
+            <td>@(Model.WhenCheckInDateTime == null ? "N/A" : Model.WhenCheckInDateTime)</td>
+        </tr>
+        <tr>
+            <th>When Check Out</th>
+            <td>:</td>
+            <td>@(Model.WhenCheckOutDateTime == null ? "N/A" : Model.WhenCheckOutDateTime)</td>
+        </tr>
+        </tbody>
+    </table>
+</div>
+
+<div class="card-footer">
+    <div class="d-flex justify-content-between align-items-center">
+        <!-- Left-aligned button -->
+        <div>
+            <a asp-area="Admin" asp-controller="Booking" asp-action="Index" class="btn btn-secondary">
+                <i class="fas fa-arrow-left me-2" aria-hidden="true"></i> Go Back
+            </a>
+        </div>
+
+        <!-- Center-aligned buttons -->
+        <div class="d-flex justify-content-center align-items-center gap-1 text-center">
+            <partial name="_ActionButton" model="@Model"/>
+        </div>
+
+        <!-- Right-aligned button -->
+        <div>
+            @if (Model.IsBookingAllowToEdit())
+            {
+                <a asp-area="Admin" asp-controller="Booking" asp-action="Edit" asp-route-id="@Model.Id" class="btn btn-primary">
+                    <i class="fas fa-edit me-2" aria-hidden="true"></i> Edit
+                </a>
+            }
+        </div>
+    </div>
+</div>

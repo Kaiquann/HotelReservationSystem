@@ -1,0 +1,44 @@
+﻿@model IPagedList<RoomCategory>
+@{
+    ViewBag.Title = "Manage Room category";
+}
+
+<section>
+    <div class="container my-5">
+        <h2 class="text-center mb-4">@ViewBag.Title</h2>
+
+        <div class="d-flex justify-content-start mb-3 gap-2">
+            <a asp-controller="RoomCategory" asp-action="Create" class="btn btn-primary">
+                <i class="fas fa-plus me-2"></i> Create
+            </a>
+            <a asp-controller="RoomCategory" asp-action="Deleted" class="btn btn-secondary position-relative">
+                <i class="fas fa-trash me-2"></i> Deleted Room Categories
+            </a>
+
+            <a asp-controller="RoomCategory" asp-action="Review" class="btn btn-warning position-relative">
+                <i class="fas fa-comments me-2"></i> Review Requests
+                @{
+                    var reviewCount = Model.Sum(rc => rc.RoomCategoryReview.Count(rcr => rcr.Status == RoomCategoryReviewStatus.PendingReview));
+                }
+                @if (reviewCount > 0)
+                {
+                    <span class="badge position-absolute top-0 start-100 translate-middle p-2 bg-danger rounded-circle">
+                        @reviewCount
+                    </span>
+                }
+            </a>
+
+            <button type="button"
+                    data-ajax="true"
+                    data-ajax-update="#table-ajax"
+                    class="btn btn-danger select-submit-btn ms-auto" form="select-form"
+                    data-message="Are you sure to delete all the selected Room Categories?"
+                    data-action="/Admin/RoomCategory/Delete">
+                <i class="fas fa-trash-alt me-2"></i> Delete
+            </button>
+        </div>
+        <div class="table-responsive" id="table-ajax">
+            <partial name="_Index"/>
+        </div>
+    </div>
+</section>

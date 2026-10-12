@@ -1,0 +1,170 @@
+﻿@using System.Globalization
+@model RoomReportVm
+@{
+    ViewBag.Title = "Hotel Revenue Report";
+}
+
+<style>
+    .form-label {
+        font-size: 1.1rem;
+        font-weight: bold;
+    }
+
+    .card {
+        background-color: #f8f9fa;
+        border-radius: 10px;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    }
+
+    .btn-primary {
+        border-radius: 5px;
+        font-size: 1.2rem;
+        font-weight: bold;
+        padding: 10px 0;
+        width: 100%;
+    }
+
+    #chartContainer {
+        background-color: #ffffff;
+        border-radius: 10px;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    }
+</style>
+
+<body class="d-flex flex-column min-vh-100">
+<div class="container mt-5">
+    <form method="post" asp-controller="Chart" asp-action="Filter">
+        <div class="card p-4 shadow-lg">
+            <div class="row">
+                <div class="col-md-6 col-lg-4 mb-3">
+                    <label for="yearFilter" class="form-label">Select Year:</label>
+                    <select id="yearFilter" name="selectedYear" class="form-select">
+                        @for (int year = DateTime.Now.Year - 5; year <= DateTime.Now.Year; year++)
+                        {
+                            if (year == Model.SelectedYear)
+                            {
+                                <option value="@year" selected>@year</option>
+                            }
+                            else
+                            {
+                                <option value="@year">@year</option>
+                            }
+                        }
+                    </select>
+                </div>
+
+                <div class="col-md-6 col-lg-4 mb-3">
+                    <label for="monthFilter" class="form-label">Select Month:</label>
+                    <select id="monthFilter" name="selectedMonth" class="form-select">
+                        @if (Model.SelectedMonth == 0)
+                        {
+                            <option value="0" selected>All</option>
+                        }
+                        else
+                        {
+                            <option value="0">All</option>
+                        }
+                        @for (int month = 1; month <= 12; month++)
+                        {
+                            if (month == Model.SelectedMonth)
+                            {
+                                <option value="@month" selected>@CultureInfo.CurrentCulture.DateTimeFormat.GetMonthName(month)</option>
+                            }
+                            else
+                            {
+                                <option value="@month">@CultureInfo.CurrentCulture.DateTimeFormat.GetMonthName(month)</option>
+                            }
+                        }
+                    </select>
+                </div>
+
+                <div class="col-12 mt-4 text-center">
+                    <button type="submit" class="btn btn-primary">Filter</button>
+                </div>
+            </div>
+        </div>
+    </form>
+
+    @if (Model.RoomCategory.Count > 0)
+    {
+        <div class="card mt-4">
+            <div class="card-header">
+                <h4>Filtered Data: Room Categories</h4>
+            </div>
+            <div class="card-body">
+                <table class="table table-bordered table-striped">
+                    <thead>
+                    <tr>
+                        <th>Room Category</th>
+                        <th>Total Revenue</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    @for (int i = 0; i < Model.RoomCategory.Count; i++)
+                    {
+                        <tr>
+                            <td>@Model.RoomCategory[i].Type</td>
+                            <td>RM @Model.TotalAmount[i]</td>
+                        </tr>
+                    }
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    }
+    else
+    {
+        <div class="alert alert-warning mt-4">
+            No data available for the selected filters.
+        </div>
+    }
+
+    <div id="chartContainer" class="mt-5" style="height: 370px; width: 100%;"></div>
+</div>
+</body>
+
+<script>
+    window.onload = function() {
+        const dataPoints = [];
+
+        @for (int i = 0; i < Model.RoomCategory.Count; i++)
+        {
+            <text>
+                dataPoints.push({
+                    label: "@Model.RoomCategory[i].Type",
+                    y: @Model.TotalAmount[i]
+                });
+            </text>
+        }
+
+        const chart = new CanvasJS.Chart("chartContainer",
+            {
+                animationEnabled: true,
+                exportEnabled: true,
+                theme: "light1",
+                title: {
+                    text: "Total Revenue by Room Category"
+                },
+                axisY: {
+                    includeZero: true,
+                    title: "Total Revenue"
+                },
+                axisX: {
+                    title: "Room Categories",
+                    interval: 1
+                },
+                data: [
+                    {
+                        type: "column",
+                        indexLabel: "{y}",
+                        indexLabelFontColor: "#5A5757",
+                        indexLabelFontSize: 16,
+                        indexLabelPlacement: "outside",
+                        dataPoints: dataPoints
+                    }
+                ]
+            });
+
+        chart.render();
+    }
+</script>

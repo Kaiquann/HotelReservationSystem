@@ -1,0 +1,30 @@
+﻿@model Order
+
+@if (Model.IsOrderAllowToEdit())
+{
+    <a asp-area="Admin"
+       asp-controller="Order"
+       asp-action="Edit"
+       asp-route-id="@Model.OrderNumber"
+       class="btn btn-primary btn-sm">
+        <i class="fas fa-edit me-2" aria-hidden="true"></i> Edit
+    </a>
+}
+
+@if (Model.Status == OrderStatus.PendingRefund)
+{
+    <form data-ajax="true"
+          data-ajax-update="#table-ajax"
+          asp-area="Admin"
+          asp-controller="Order"
+          asp-action="Refund"
+          asp-route-id="@Model.OrderNumber"
+          method="post"
+          id="Refund_@Model.OrderNumber">
+    </form>
+    <button data-confirm="Are you sure to refund this order?"
+            class="btn btn-warning btn-sm"
+            form="Refund_@Model.OrderNumber">
+        <i class="fas fa-dollar me-2" aria-hidden="true"></i> Refund
+    </button>
+}

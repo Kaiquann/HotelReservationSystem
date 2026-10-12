@@ -1,0 +1,97 @@
+﻿@model EditRoomCategoryVm
+@{
+    ViewBag.Title = "Update Room Category";
+}
+
+<section>
+    <div class="container my-5">
+        <h2 class="text-center mb-4">@ViewBag.Title</h2>
+        <form asp-area="Admin" asp-controller="Roomcategory" asp-action="DeleteImage" enctype="multipart/form-data" id="DeleteImage"></form>
+        <form asp-area="Admin" asp-controller="Roomcategory" asp-action="Update" enctype="multipart/form-data">
+            <input type="hidden" asp-for="RoomCategory.Id"/> <!-- Hidden field for RoomCategory ID -->
+
+            <div class="card shadow-sm">
+                <div class="card-body">
+                    <div class="row mb-3">
+                        <label class="form-label fw-bold">Room Images</label>
+                        <div class="d-flex flex-wrap gap-3" id="uploaded-images">
+                            @if (Model.RoomImageList != null)
+                            {
+                                foreach (var image in Model.RoomImageList)
+                                {
+                                    <div class="position-relative">
+                                        <img src="/@(Common.ImageUploadPath + image.ImagePath)"
+                                             class="img-thumbnail"
+                                             style="max-height: 150px; max-width: 150px;"/>
+
+                                        <button type="submit"
+                                                class="btn ms-auto"
+                                                name="ImageId"
+                                                value="@image.Id"
+                                                form="DeleteImage">
+                                            ✖
+                                        </button>
+                                    </div>
+                                }
+                            }
+                            <label class="upload">
+                                <img src="/images/importImage.png"
+                                     alt="User Profile Image" class="img-thumbnail" loading="lazy" style="border: none; max-height: 100px; max-width: 100px;"/><input asp-for="Images" accept="image/jpeg,image/png" multiple hidden>
+                            </label>
+                        </div>
+                        <span asp-validation-for="Images" class="text-danger"></span>
+                    </div>
+
+                    <div class="row mb-3">
+                        <label asp-for="RoomCategory.Type" class="col-md-3 col-form-label text-md-end fw-bold">Room Type :</label>
+                        <div class="col-md-9">
+                            <input asp-for="RoomCategory.Type" class="form-control"/>
+                            <span asp-validation-for="RoomCategory.Type" class="text-danger"></span>
+                        </div>
+                    </div>
+
+                    <div class="row mb-3">
+                        <label asp-for="RoomCategory.Price" class="col-md-3 col-form-label text-md-end fw-bold">Price :</label>
+                        <div class="col-md-9">
+                            <input asp-for="RoomCategory.Price" class="form-control" min="1"/>
+                            <span asp-validation-for="RoomCategory.Price" class="text-danger"></span>
+                        </div>
+                    </div>
+
+                    <div class="row mb-3">
+                        <label asp-for="RoomCategory.MaxPeople" class="col-md-3 col-form-label text-md-end fw-bold">Max People :</label>
+                        <div class="col-md-9">
+                            <input asp-for="RoomCategory.MaxPeople" class="form-control" min="1"/>
+                            <span asp-validation-for="RoomCategory.MaxPeople" class="text-danger"></span>
+                        </div>
+                    </div>
+
+                    <div class="row mb-3">
+                        <label asp-for="RoomCategory.Description" class="col-md-3 col-form-label text-md-end fw-bold">Description :</label>
+                        <div class="col-md-9">
+                            <textarea asp-for="RoomCategory.Description" class="form-control" rows="3"></textarea>
+                            <span asp-validation-for="RoomCategory.Description" class="text-danger"></span>
+                        </div>
+                    </div>
+
+                    <div class="row mb-3">
+                        <label asp-for="RoomCategory.IsAddBed" class="col-md-3 col-form-label text-md-end fw-bold">Add Bed :</label>
+                        <div class="col-md-9 d-flex align-items-center">
+                            <input asp-for="RoomCategory.IsAddBed" type="checkbox" class="form-check-input me-2"/>
+                            <span asp-validation-for="RoomCategory.IsAddBed" class="text-danger"></span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="card-footer text-end">
+                    <a asp-area="Admin" asp-controller="Roomcategory" asp-action="Index" class="btn btn-secondary">
+                        <i class="fas fa-times" aria-hidden="true"></i> Cancel
+                    </a>
+                    <button type="submit" class="btn btn-success">
+                        <i class="fas fa-check" aria-hidden="true"></i> Update
+                    </button>
+                </div>
+            </div>
+        </form>
+    </div>
+</section>

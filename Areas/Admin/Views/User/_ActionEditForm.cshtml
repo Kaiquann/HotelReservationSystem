@@ -1,0 +1,64 @@
+﻿@model EditUserVm
+
+<form data-ajax="true"
+      data-ajax-update="#ajax-update-content"
+      asp-area="Admin"
+      asp-controller="User"
+      asp-action="RemoveProfileImage"
+      asp-route-id="@Model.Id"
+      method="post"
+      id="removeProfileImageForm">
+</form>
+
+<form data-ajax="true"
+      data-ajax-update="#ajax-update-content"
+      asp-area="Admin"
+      asp-controller="User"
+      asp-action="SendResetPasswordLink"
+      asp-route-id="@Model.Id"
+      method="post"
+      id="sendResetPasswordLinkForm">
+</form>
+
+@if (Model.IsDeleted == 0)
+{
+    @if (!Model.IsBlocked)
+    {
+        <form data-ajax="true"
+              data-ajax-update="#ajax-update-content"
+              action="/Admin/User/Block?ids=@Model.Id"
+              method="post"
+              id="Block_@Model.Id">
+        </form>
+    }
+    else
+    {
+        <form data-ajax="true"
+              data-ajax-update="#ajax-update-content"
+              action="/Admin/User/Unblock?ids=@Model.Id"
+              method="post"
+              id="Unblock_@Model.Id">
+        </form>
+    }
+
+    <form data-ajax="true"
+          data-ajax-update="#ajax-update-content"
+          action="/Admin/User/Delete?ids=@Model.Id"
+          method="post"
+          id="Delete_@Model.Id">
+    </form>
+}
+else if (Model.IsDeleted == 1)
+{
+    <form data-ajax="true"
+          data-ajax-update="#ajax-update-content"
+          action="/Admin/User/Recover?ids=@Model.Id"
+          method="post"
+          id="Recover_@Model.Id">
+    </form>
+
+    <form action="/Admin/User/PermanentDelete?ids=@Model.Id"
+          method="post"
+          id="PermanentDelete_@Model.Id">
+    </form>
+}

@@ -1,0 +1,34 @@
+﻿@model RoomVm
+<partial name="_SweetAlert"/>
+<div class="d-flex justify-content-center align-content-center">
+    <partial name="_FilterBar"/>
+    <partial name="Table/_FilterFormPartial"/>
+    <partial name="Table/_SearchBarPartial"/>
+</div>
+
+
+<section class="rooms-section">
+    <div class="container">
+        <div class="row g-4">
+            @foreach (var room in Model.RoomCategories)
+            {
+                <div class="col-md-4">
+                    <a class="room-link mx-3 my-2 text-decoration-none" asp-area="" asp-controller="Room" asp-action="ViewRoom" asp-route-id="@room.Id">
+                        <div class="card">
+                            @if (room.RoomImages != null && room.RoomImages.Any())
+                            {
+                                <img src="/@(Common.ImageUploadPath + room.RoomImages.FirstOrDefault().ImagePath)"
+                                     class="card-img-top"
+                                     alt="Room Image"
+                                     loading="lazy">
+                            }
+                            <div class="card-body text-center">
+                                <h5 class="card-title">@room.Type</h5>
+                            </div>
+                        </div>
+                    </a>
+                </div>
+            }
+        </div>
+    </div>
+</section>

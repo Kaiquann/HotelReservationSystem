@@ -1,0 +1,136 @@
+﻿@model CartVm
+
+<partial name="_SweetAlert"/>
+
+<div class="col-lg-8">
+    @foreach (var cart in Model.CartList)
+    {
+        {
+            <div class="cart-item" data-checkable>
+                <input type="checkbox"
+                       class="form-check-input mx-3"
+                       id="cartCheckbox_@(cart.Id)"
+                       name="ids"
+                       value="@cart.Id"
+                       form="buyWithCartForm"
+                       style="border: 1px solid #6e6e6e; box-shadow: 0 0 5px rgba(0, 0, 0, 0.5); transform: scale(1.5);"/>
+                <div>
+                    @foreach (var img in Model.RoomImageList)
+                    {
+                        if (cart.RoomCategoryId.Equals(img.RoomCategoryId))
+                        {
+                            <img src="/@(Common.ImageUploadPath + img.ImagePath)" alt="image" class="img-fluid"/>
+                            break;
+                        }
+                    }
+                </div>
+                <div class="cart-item-details">
+                    <h5 class="mb-1" style="color: orangered;">
+                        <strong>@cart.RoomCategory.Type</strong>
+                    </h5>
+                    <p class="mb-1"><strong>Description:</strong> A cozy single room with modern amenities and a stunning sea view. Perfect for solo travelers looking for comfort and style.</p>
+                    <p class="mb-1 d-flex justify-content-between align-items-center">
+                        <span>
+                            <strong>Check In:</strong> @cart.CheckInDate
+                        </span>
+                        <span>
+                            <strong>Check Out:</strong> @cart.CheckOutDate
+                        </span>
+                    </p>
+                    <p class="fw-bold item-price my-0" data-price="@cart.RoomCategory.Price">RM @cart.RoomCategory.Price (Per night)</p>
+
+                    <p class="mb-1 item-total-days" data-total-days="@(cart.CheckOutDate.Value - cart.CheckInDate.Value).Days">
+                        <strong>
+                            @{
+                                var totalDays = (cart.CheckOutDate.Value - cart.CheckInDate.Value).Days;
+                            }
+                            Total: @totalDays nights
+                        </strong>
+                    </p>
+                    @if (cart.RoomSettingId == cart.RoomSetting.Id)
+                    {
+                        <p class="fw-bold text-decoration-underline mb-2">Preference:</p>
+                        <ul class="list-unstyled">
+                            @if (cart.RoomSetting.IsSmokingArea)
+                            {
+                                <li>
+                                    <i class="fas fa-smoking text-success me-2"></i> Smoking Area
+                                </li>
+                            }
+                            @if (cart.RoomSetting.IsLandscapeArea)
+                            {
+                                <li>
+                                    <i class="fas fa-tree text-success me-2"></i> Landscape View
+                                </li>
+                            }
+                            @if (cart.RoomSetting.IsCornerRoom)
+                            {
+                                <li>
+                                    <i class="fas fa-door-open text-success me-2"></i> Corner Room
+                                    <span class="corner-price" data-corner-price="@Common.CornerRoomPrice">
+                                        (RM @Common.CornerRoomPrice per night)
+                                    </span>
+                                </li>
+                            }
+                            @if (cart.IsAddBed)
+                            {
+                                <li>
+                                    <i class="fas fa-bed text-success me-2"></i> Additional Bed
+                                    <span class="addbed-price" data-addbed-price="@Common.AddBedPrice">
+                                        (RM @Common.AddBedPrice per night)
+                                    </span>
+                                </li>
+                            }
+                        </ul>
+                    }
+                    <p class="fw-bold">RM @cart.TotalPrice</p>
+                </div>
+
+                <div class="cart-item-actions">
+                    <form data-ajax="true"
+                          data-ajax-update="#table-ajax"
+                          asp-action="UpdateCartData"
+                          method="post">
+                        <input type="hidden" name="cartId" value="@cart.Id"/>
+                        <button type="submit" class="btn btn-outline-secondary btn-sm" name="quantityAction" value="decrease">-</button>
+                        <span class="mx-2 item-quantity" data-quantity="@cart.Quantity">@cart.Quantity</span>
+                        <button type="submit" class="btn btn-outline-secondary btn-sm" name="quantityAction" value="increase">+</button>
+                    </form>
+                    <form data-ajax="true"
+                          data-ajax-update="#table-ajax"
+                          asp-action="RemoveCart"
+                          asp-route-id="@cart.Id"
+                          method="post">
+                        <button class="btn btn-link text-danger remove-cart-btn"
+                                data-confirm>
+                            <i class="bi bi-trash" style="font-size: 20px;"></i>
+                        </button>
+                    </form>
+                </div>
+            </div>
+        }
+    }
+</div>
+
+<div class="col-lg-4">
+    <div class="order-summary">
+        <h5>Order Summary</h5>
+        <div class="d-flex justify-content-between">
+            <p>Subtotal</p>
+            <p class="subtotal">0.00</p>
+        </div>
+        <div class="d-flex justify-content-between">
+            <p>Service charge(10%)</p>
+            <p class="serviceCharge">0.00</p>
+        </div>
+        <div class="d-flex justify-content-between">
+            <p>Total Price</p>
+            <p class="totalPrice">0.00</p>
+        </div>
+        <hr/>
+        <div class="text-center mt-4">
+
+            <button class="checkOutBtn btn btn-danger btn-lg w-100" data-confirm="Are you sure you want to checkout?" disabled form="buyWithCartForm">Check Out</button>
+        </div>
+    </div>
+</div>

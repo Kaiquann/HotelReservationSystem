@@ -1,0 +1,55 @@
+﻿@model IPagedList<RoomCategory>
+@{
+    string[] fields =
+    [
+        "", "Id", "Type", "Price(RM)",
+        "Description", "Max People", "AddBed", "Create At"
+    ];
+}
+
+<form action="" method="post" id="select-form"></form>
+<partial name="_SweetAlert"/>
+<partial name="Table/_FilterFormPartial"/>
+<partial name="Table/_SearchBarPartial"/>
+<partial name="Table/_CountRecordPartial" model="@Model"/>
+<table class="table table-bordered">
+    <partial name="Table/_HeaderPartial" model="@fields"/>
+    <tbody>
+    @foreach (var roomCategory in Model)
+    {
+        <tr data-checkable>
+            <td>
+                <input type="checkbox" name="ids" value="@roomCategory.Id" form="select-form" class="select-box"/>
+            </td>
+            <td>@roomCategory.Id</td>
+            <td>@roomCategory.Type</td>
+            <td>@roomCategory.Price</td>
+            <td>@roomCategory.Description</td>
+            <td>@roomCategory.MaxPeople</td>
+
+            <td>
+                @if (roomCategory.IsAddBed)
+                {
+                    <p>
+                        <i class="fa-solid fa-bed"></i> Add bed
+                    </p>
+                }
+                else
+                {
+                    <p>
+                        N/A
+                    </p>
+                }
+            </td>
+
+
+            <td>@roomCategory.CreatedAt</td>
+            <td>
+                <a asp-area="Admin" asp-controller="RoomCategory" asp-action="Edit" asp-route-id="@roomCategory.Id" class="btn btn-primary">Edit</a>
+                <partial name="_ActionButton" model="@roomCategory"/>
+            </td>
+        </tr>
+    }
+    </tbody>
+</table>
+<partial name="Table/_FooterPartial" model="@Model"/>

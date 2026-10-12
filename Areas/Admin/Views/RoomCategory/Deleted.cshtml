@@ -1,0 +1,48 @@
+﻿@model IPagedList<RoomCategory>
+@{
+    ViewBag.Title = "Manage Deleted Room categories";
+}
+
+<section>
+    <div class="container my-5">
+        <h2 class="text-center mb-4">@ViewBag.Title</h2>
+
+        <ul class="nav nav-pills mb-3">
+            <li class="nav-item">
+                <a asp-controller="RoomCategory" asp-action="Index" class="btn btn-success d-flex align-items-center">
+                    <i class="fas fa-arrow-left me-2" aria-hidden="true"></i> Go Back
+                </a>
+            </li>
+        </ul>
+
+        <ul class="nav nav-pills mb-3">
+            <li class="nav-item text-center d-flex align-items-center justify-content-center">
+                <b>
+                    <i class="fas fa-tasks" aria-hidden="true"></i> Bulk Actions
+                </b>
+            </li>
+            <li class="nav-item mx-2"></li>
+            <li class="nav-item">
+                <button type="button"
+                        data-ajax="true"
+                        data-ajax-update="#table-ajax" data-message="Are you sure to recover all the selected room categories ?" form="select-form"
+                        data-action="/Admin/RoomCategory/Recover" class="select-submit-btn btn btn-warning me-2" style="height: auto;">
+                    <i class="fas fa-undo" aria-hidden="true"></i> Recover
+                </button>
+            </li>
+            <li class="nav-item mx-2"></li>
+            <li class="nav-item">
+                <button type="button"
+                        data-ajax="true"
+                        data-ajax-update="#table-ajax" data-message="Are you sure to permanent delete all the selected room categories ?" form="select-form"
+                        data-action="/Admin/RoomCategory/PermanentDelete" class="select-submit-btn btn btn-danger" style="height: auto;">
+                    <i class="fas fa-times" aria-hidden="true"></i> Permanent Delete
+                </button>
+            </li>
+        </ul>
+
+        <div id="table-ajax">
+            <partial name="_Index"/>
+        </div>
+    </div>
+</section>

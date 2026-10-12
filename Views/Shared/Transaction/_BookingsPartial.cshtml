@@ -1,0 +1,49 @@
+﻿@model ICollection<Booking>
+
+<table class="table table-bordered">
+    <thead>
+    <tr>
+        <th>Room Bookings</th>
+        <th></th>
+        <th>Total</th>
+    </tr>
+    </thead>
+    <tbody>
+    @foreach (var booking in Model)
+    {
+        <tr>
+            <td>
+                @booking.Room.RoomCategory.Type Room - @booking.RoomNumber
+                @if (booking.IsAddBed)
+                {
+                    <br/>
+                    <span class="text-success">Add Bed</span>
+                }
+                @if (booking.Room.RoomSetting.IsSmokingArea)
+                {
+                    <br/>
+                    <span class="text-success">Smoking Area</span>
+                }
+                @if (booking.Room.RoomSetting.IsLandscapeArea)
+                {
+                    <br/>
+                    <span class="text-success">Landscape Area</span>
+                }
+                @if (booking.Room.RoomSetting.IsCornerRoom)
+                {
+                    <br/>
+                    <span class="text-success">Corner Room</span>
+                }
+                <br/>
+                Check-In Date - @booking.CheckInDate
+                <br/>
+                Check-Out Date - @booking.CheckOutDate
+            </td>
+            <td>:</td>
+            <td>
+                RM @booking.TotalAmount.ToString("F2")
+            </td>
+        </tr>
+    }
+    </tbody>
+</table>

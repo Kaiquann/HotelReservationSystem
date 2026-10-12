@@ -1,0 +1,32 @@
+﻿@model Booking
+
+@if (Model.Status == BookingStatus.Confirmed &&
+     DateTime.Today.Date >= Model.CheckInDate.Date)
+{
+    <form data-ajax="true"
+          data-ajax-update="#ajax-update-content"
+          action="/Admin/Booking/CheckIn?ids=@Model.Id"
+          method="post"
+          id="CheckIn_@Model.Id">
+    </form>
+    <button data-confirm="Are you sure to check in this booking?"
+            class="btn btn-success"
+            form="CheckIn_@Model.Id">
+        <i class="fas fa-check me-2" aria-hidden="true"></i> Check In
+    </button>
+}
+
+@if (Model.Status == BookingStatus.CheckedIn)
+{
+    <form data-ajax="true"
+          data-ajax-update="#ajax-update-content"
+          action="/Admin/Booking/CheckOut?ids=@Model.Id"
+          method="post"
+          id="CheckOut_@Model.Id">
+    </form>
+    <button data-confirm="Are you sure to check out this booking?"
+            class="btn btn-success"
+            form="CheckOut_@Model.Id">
+        <i class="fas fa-check me-2" aria-hidden="true"></i> Check Out
+    </button>
+}

@@ -1,0 +1,12 @@
+global using HotelReservationSystem;
+global using HotelReservationSystem.Areas.Admin.ViewModels;
+global using HotelReservationSystem.Models;
+global using HotelReservationSystem.Services;
+global using HotelReservationSystem.ViewModels;
+global using HotelReservationSystem.Utilities;
+global using Microsoft.AspNetCore.Mvc.TagHelpers;
+global using X.PagedList.Mvc.Core;
+global using Microsoft.AspNetCore.Authorization;
+global using Microsoft.AspNetCore.Mvc;
+global using X.PagedList;
+global using X.PagedList.Extensions;

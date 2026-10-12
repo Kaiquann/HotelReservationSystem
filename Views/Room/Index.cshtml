@@ -1,0 +1,105 @@
+﻿@model RoomVm
+@{
+    ViewBag.Title = "Hotel";
+}
+
+<body>
+<style>
+    .section1 {
+        background-image: url('/images/hotelpage.jpg');
+        background-position: center center;
+        background-size: cover;
+        height: 550px;
+        margin-bottom: -50px;
+        position: relative;
+        text-shadow: 0 2px 5px rgba(0, 0, 0, 1.0);
+    }
+
+    .booking-section {
+        background-color: #f8f9fa;
+        border-radius: 20px;
+        box-shadow: 10px 10px 20px rgb(0 0 0 / 10%);
+        padding: 20px;
+        position: relative;
+        z-index: 2;
+    }
+
+
+    .welcome-section h2 {
+        font-weight: bold;
+        margin-bottom: 20px;
+    }
+
+    .rooms-section .card {
+        box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+        transition: transform 0.3s ease;
+    }
+
+    .rooms-section .card:hover { transform: scale(1.05); }
+
+    .rooms-section .btn { border-radius: 30px; }
+
+    .card-img-top {
+        height: 300px;
+        width: 100%;
+    }
+
+    .room-link { width: 600px; }
+
+    .btn-add-pending {
+        background-color: #007bff;
+        border: none;
+        border-radius: 20px;
+        color: #fff;
+        padding: 10px 20px;
+    }
+
+</style>
+<section class="section1 text-center text-white d-flex align-items-center">
+    <div class="container">
+        <h1 class="display-4 fw-bold">Welcome to @Common.CompanyName</h1>
+        <p class="fs-4">The Place Where You're Looking To</p>
+    </div>
+</section>
+
+<section class="container booking-section py-4">
+    <form data-ajax="true"
+          data-ajax-update="#table-ajax"
+          id="search-form"
+          asp-controller="Room"
+          asp-action="SearchRoom">
+        <div class="row justify-content-center align-content-center">
+            <div class="col-md-2 mx-3">
+                <label asp-for="CheckInDate" class="fw-bold form-label"></label>
+                <input asp-for="CheckInDate" class="form-control" type="date">
+                <span asp-validation-for="CheckInDate" class="text-danger"></span>
+            </div>
+            <div class="col-md-2 mx-3">
+                <label asp-for="CheckOutDate" class="fw-bold form-label"></label>
+                <input asp-for="CheckOutDate" class="form-control" type="date">
+                <span asp-validation-for="CheckOutDate" class="text-danger"></span>
+            </div>
+            <div class="col-md-2 mx-3">
+                <label asp-for="Guests" class="fw-bold form-label"></label>
+                <input asp-for="Guests" class="form-control" type="number" placeholder="Guests" min="1">
+                <span asp-validation-for="Guests" class="text-danger"></span>
+            </div>
+            <div class="col-md-2 d-flex align-items-center mx-3">
+                <button class="btn btn-danger w-100" form="search-form" type="submit">Find Now</button>
+            </div>
+        </div>
+    </form>
+</section>
+
+<section class="welcome-section py-2">
+    <div class="container text-center">
+        <h2>Welcome to Hotel</h2>
+        <p class="text-muted">Our hotel is simply dummy text of the printing and typesetting industry.</p>
+    </div>
+</section>
+
+<div class="table-responsive" id="table-ajax">
+    <partial name="_Index"/>
+</div>
+
+</body>

@@ -1,0 +1,23 @@
+﻿@model dynamic
+
+@if (Model.IsDeleted == 0)
+{
+    <button data-post="/Admin/Room/Delete?ids=@Model.Id"
+            data-confirm="Are you sure to delete this Room?"
+            class="btn btn-danger">
+        <i class="fas fa-trash" aria-hidden="true"></i> Delete
+    </button>
+}
+else if (Model.IsDeleted == 1)
+{
+    <button data-post="/Admin/Room/Recover?ids=@Model.Id"
+            data-confirm="Are you sure to recover this Room?"
+            class="btn btn-warning">
+        <i class="fas fa-undo" aria-hidden="true"></i> Recover
+    </button>
+    <button data-post="/Admin/Room/PermanentDelete?ids=@Model.Id"
+            data-confirm="Are you sure to permanently delete this Room?"
+            class="btn btn-danger">
+        <i class="fas fa-times" aria-hidden="true"></i> Permanent Delete
+    </button>
+}

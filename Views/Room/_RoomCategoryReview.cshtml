@@ -1,0 +1,128 @@
+﻿@model ViewRoomVm
+
+<div class="review-container d-flex justify-content-center align-content-center my-3">
+    <div class="row w-75 p-3" style="background-color: #f1f1f1;">
+        <div class="col-lg-8">
+            <h5 class="text-decoration-underline">All Reviews <span class="text-primary">(@Model.RoomCategoryReview.Count())</span></h5>
+
+            @if (Model.RoomCategoryReview == null || !Model.RoomCategoryReview.Any())
+            {
+                <h2>No review</h2>
+            }
+            else
+            {
+                <div id="review-list">
+                    @foreach (var review in Model.RoomCategoryReview)
+                    {
+                        var isVisible = Model.RoomCategoryReview.IndexOf(review) < 3 ? "block" : "none";
+                        <!-- Show first 3 reviews initially -->
+                        <div class="review-item" style="display: @isVisible;">
+                            <div class="d-flex align-items-start">
+                                <img src="@(!string.IsNullOrEmpty(review.User.ProfileImageUrl)
+                                              ? "/" + Common.ImageUploadPath + review.User.ProfileImageUrl
+                                              : "/images/profile-icon.png")"
+                                     alt="Avatar"
+                                     class="rounded-circle me-3" style="height: 50px; width: 50px;">
+                                <div>
+                                    <div class="review-author">@review.User.UserName</div>
+                                    <div class="review-rating">
+                                        <div class="star-rating">
+                                            @for (int i = 1; i <= 5; i++)
+                                            {
+                                                <span class="star @(i <= review.Rating ? "filled" : "")">★</span>
+                                            }
+                                        </div>
+                                    </div>
+                                    <p class="mb-1">@review.Message</p>
+                                </div>
+                                <div class="ms-auto review-date">@review.UpdatedAt</div>
+                            </div>
+                        </div>
+                    }
+                </div>
+
+                @if (Model.RoomCategoryReview.Count() > 3)
+                {
+                    <button id="viewAllBtn" class="btn btn-link" style="cursor: pointer; text-decoration: underline;">View All</button>
+                }
+            }
+        </div>
+
+
+        <div class="col-lg-4">
+            <div class="assessment-summary">
+                <h5>Assessment Reviews</h5>
+                <div>
+                    <p>
+                        <span>
+                            @for (int i = 1; i <= 5; i++)
+                            {
+                                if (i <= Math.Floor(Model.AverageRating))
+                                {
+                                    <i class="fa fa-star filled" style="color: gold;"></i>
+                                }
+                                else if (i == Math.Ceiling(Model.AverageRating) && Model.AverageRating % 1 != 0)
+                                {
+                                    <i class="fa fa-star-half-alt filled" style="color: gold;"></i>
+                                }
+                                else
+                                {
+                                    <i class="fa fa-star" style="color: #ccc;"></i>
+                                }
+                            }
+                        </span>
+                        - @Model.AverageRating out of 5
+                        (@Model.Percentage%)
+                        (@Model.TotalReviews Reviews)
+                    </p>
+                </div>
+
+
+                @if (Model.isPendingReview)
+                {
+                    <button class="btn-add-pending" style="background-color: #007bff; border: none; border-radius: 20px; color: #fff; padding: 10px 20px;">
+                        Pending..
+                    </button>
+                }
+                else if (Model.isAllowToAddReview)
+                {
+                    <button class="btn-add-review">Add Review</button>
+                }
+
+
+            </div>
+        </div>
+
+        <div id="reviewModal" class="modal" style="display: none;">
+            <div class="modal-content">
+                <div class="flex-column align-content-center justify-content-end text-center">
+                    <span class="close-btn" onclick="closeReviewModal()">&times;</span>
+                </div>
+                <h4>Submit Your Review</h4>
+                <form asp-controller="Room"
+                      asp-action="AddRoomCategoryReview"
+                      asp-route-id="@Model.RoomCategory.Id"
+                      method="post"
+                      id="reviewForm">
+                    <div class="form-group">
+                        <label for="rating">Rating:</label>
+                        <div id="rating-stars">
+                            <span class="star" data-value="1">★</span>
+                            <span class="star" data-value="2">★</span>
+                            <span class="star" data-value="3">★</span>
+                            <span class="star" data-value="4">★</span>
+                            <span class="star" data-value="5">★</span>
+                        </div>
+                        <input type="hidden" id="ratingValue" name="rating">
+                    </div>
+                    <div class="form-group my-3">
+                        <label for="reviewContent">Review:</label>
+                        <textarea id="reviewContent" name="reviewContent" rows="4" class="form-control"></textarea>
+                    </div>
+                    <button type="submit" class="btn btn-primary my-3">Submit</button>
+                </form>
+            </div>
+        </div>
+
+    </div>
+</div>

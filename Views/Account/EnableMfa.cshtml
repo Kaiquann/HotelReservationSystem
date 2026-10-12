@@ -1,0 +1,55 @@
+﻿@model EnableMfaVm;
+@{
+    ViewBag.Title = "Enable MFA";
+}
+
+<section>
+    <div class="container my-5">
+        <h2 class="text-center mb-4">@ViewBag.Title</h2>
+        <form asp-area="" asp-controller="Account" asp-action="EnableMfa" method="post">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <table class="table table-bordered">
+                <tbody>
+                <tr>
+                    <th>Email</th>
+                    <td>:</td>
+                    <td>@Model.Email</td>
+                    <input type="hidden" asp-for="Email" class="form-control"/>
+                </tr>
+                <tr>
+                    <th>QrCode</th>
+                    <td>:</td>
+                    <td>
+                        <img src="@Model.QrCodeUrl" class="img-thumbnail" alt="@Model.ManualEntryCode"/>
+                    </td>
+                </tr>
+                <tr>
+                    <th>Manual Entry Code</th>
+                    <td>:</td>
+                    <td>@Model.ManualEntryCode</td>
+                </tr>
+                <tr>
+                    <th>Enter Code</th>
+                    <td>:</td>
+                    <td>
+                        <input asp-for="Code" class="form-control"/>
+                        <span asp-validation-for="Code" class="text-danger"></span>
+                    </td>
+                </tr>
+                </tbody>
+                <tfoot>
+                <tr>
+                    <td colspan="3">
+                        <a asp-area="" asp-controller="Account" asp-action="Profile" class="btn btn-secondary">
+                            <i class="fas fa-times" aria-hidden="true"></i> Cancel
+                        </a>
+                        <button type="submit" class="btn btn-primary" data-confirm>
+                            <i class="fas fa-check" aria-hidden="true"></i> Enable MFA
+                        </button>
+                    </td>
+                </tr>
+                </tfoot>
+            </table>
+        </form>
+    </div>
+</section>

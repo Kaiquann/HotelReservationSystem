@@ -1,0 +1,173 @@
+﻿﻿@using Microsoft.AspNetCore.Authentication
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <title>@ViewBag.Title</title>
+
+    <!-- Icon -->
+    <link rel="website icon" type="jpg" href="/images/logo.jpg"/>
+
+    <!-- Library Css -->
+    <link rel="stylesheet" href="/lib/bootstrap/css/bootstrap.min.css"/>
+    <link rel="stylesheet" href="/lib/animatecss/animate.min.css"/>
+    <link rel="stylesheet" href="/lib/fontawesome/css/all.min.css"/>
+    <link rel="stylesheet" href="/lib/sweetalert2/sweetalert2.min.css"/>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-icons/1.10.3/font/bootstrap-icons.min.css">
+
+    <!-- Own Css -->
+    <link rel="stylesheet" href="/css/app.css" asp-append-version="true"/>
+    <link rel="stylesheet" href="/css/pager.css" asp-append-version="true"/>
+    <link rel="stylesheet" href="~/HotelReservationSystem.styles.css" asp-append-version="true"/>
+
+    @await RenderSectionAsync("head", false)
+</head>
+<body>
+<style>
+    .container-fluid {
+        padding-left: 0;
+        padding-right: 0;
+    }
+
+    .navbar {
+        background-color: #2b2a2a;
+        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        padding: 10px 20px;
+        width: 100%;
+        z-index: 1050;
+    }
+
+    .nav-link {
+        border-radius: 5px;
+        color: white;
+        font-size: 18px;
+        font-weight: 500;
+        padding: 8px 15px;
+        transition: background 0.3s ease, color 0.3s ease;
+    }
+
+    .nav-link.active { color: red; }
+
+    .nav-link:hover { color: red; }
+
+    .dropdown-menu {
+        background-color: white;
+        border: 1px solid #ddd;
+        border-radius: 0px;
+        box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.15);
+        display: none;
+        left: 0;
+        margin-right: 0;
+        padding: 0.5rem 0;
+        position: absolute;
+        right: auto;
+        z-index: 1000;
+    }
+
+    .dropdown-menu.show { display: block; }
+
+    .dropdownToggle {
+        background-color: #DCDCDC;
+        margin-right: 100px;
+    }
+</style>
+
+<header>
+    <!-- Loading Spinner -->
+    <div id="loader">
+        <div class="spinner"></div>
+    </div>
+
+    <div class="container-fluid">
+        <nav class="navbar d-flex justify-content-between align-items-center">
+            <div class="navbar-brand fw-bold text-primary">@Common.CompanyName</div>
+            <ul class="nav">
+                <li class="nav-item">
+                    <a class="nav-link mx-3 my-2 @Html.IsActive("Home", "Index")" asp-area="" asp-controller="Home" asp-action="Index">Home</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link mx-3 my-2 @Html.IsActive("Room")" asp-area="" asp-controller="Room" asp-action="Index">Hotel</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link mx-3 my-2 @Html.IsActive("Home", "AboutUs")" asp-area="" asp-controller="Home" asp-action="AboutUs">About Us</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link mx-3 my-2 @Html.IsActive("Home", "ContactUs")" asp-area="" asp-controller="Home" asp-action="ContactUs">Contact</a>
+                </li>
+                @if (User.IsLoggedIn() && !User.HasAdminAccess())
+                {
+                    <li class="nav-item">
+                        <a class="nav-link mx-3 my-2 @Html.IsActive("Cart")" asp-area="" asp-controller="Cart" asp-action="Index">Cart</a>
+                    </li>
+                }
+                @if (User.HasAdminAccess())
+                {
+                    <li class="nav-item">
+                        <a class="nav-link mx-3 my-2 @Html.IsActive("Dashboard")" asp-area="Admin" asp-controller="User" asp-action="Index">Admin Dashboard</a>
+                    </li>
+                }
+            </ul>
+
+            <div class="dropdown">
+                <button id="dropdownToggle" class="dropdownToggle btn btn-light">
+                    <i class="bi bi-three-dots"></i>
+                </button>
+                <partial name="_LoginPartial"/>
+            </div>
+        </nav>
+    </div>
+</header>
+
+<div class="container-fluid">
+    <main role="main" class="pb-3">
+        @RenderBody()
+    </main>
+</div>
+
+<footer class="border-top footer text-muted">
+    <div class="container">
+        &copy; @DateTime.Today.Year - HotelReservationSystem
+    </div>
+</footer>
+
+<!-- Library Js -->
+<script src="/js/jquery.min.js"></script>
+<script src="/js/jquery.validate.min.js"></script>
+<script src="/js/jquery.unobtrusive-ajax.min.js"></script>
+<script src="/js/jquery.validate.unobtrusive.min.js"></script>
+<script src="/lib/bootstrap/js/bootstrap.min.js"></script>
+<script src="/lib/fontawesome/js/all.js"></script>
+<script src="/lib/sweetalert2/sweetalert2.all.min.js"></script>
+<script src="https://challenges.cloudflare.com/turnstile/v0/api.js" async defer></script>
+<script src="https://cdn.canvasjs.com/canvasjs.min.js"></script>
+<script src="https://unpkg.com/html5-qrcode" type="text/javascript"></script>
+
+<!-- Own Js -->
+<script src="/js/app.js" asp-append-version="true"></script>
+
+<!-- Crisp Chat -->
+@if (!User.HasAdminAccess())
+{
+    <script type="text/javascript">
+        window.$crisp = [];
+        window.CRISP_WEBSITE_ID = "f2d30349-7f8b-4aa3-8d10-ed46dbd4c067";
+        (function() {
+            d = document;
+            s = d.createElement("script");
+            s.src = "https://client.crisp.chat/l.js";
+            s.async = 1;
+            d.getElementsByTagName("head")[0].appendChild(s);
+        })();
+    </script>
+}
+
+<partial name="_SweetAlert"/>
+<div id="ajax-sweetalert">
+    <partial name="_SweetAlert"/>
+</div>
+
+@await RenderSectionAsync("foot", false)
+</body>
+</html>

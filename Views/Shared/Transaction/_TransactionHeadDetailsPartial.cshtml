@@ -1,0 +1,15 @@
+﻿@model Transaction 
+
+<table class="table table-bordered">
+    <tbody>
+    <tr>
+        <th style="color: gray">Receipt from @Common.CompanyName</th>
+    </tr>
+    <tr>
+        <th>RM @Model.TotalAmount</th>
+    </tr>
+    <tr>
+        <th style="color: gray">Paid on @Model.CreatedAt</th>
+    </tr>
+    </tbody>
+</table>
