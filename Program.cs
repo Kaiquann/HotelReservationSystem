@@ -29,7 +29,7 @@ public class Program
         builder.Services.AddDbContext<DB>(options =>
             options.UseSqlServer(connectionString, sql => sql.EnableRetryOnFailure()));
 
-        // Render supplies the public port through the PORT environment variable.
+        // Railway supplies the public port through the PORT environment variable.
         string? port = Environment.GetEnvironmentVariable("PORT");
         if (!string.IsNullOrWhiteSpace(port))
         {
@@ -83,7 +83,6 @@ public class Program
         // Step 7: Bind configuration sections
         ConfigurationManager configuration = builder.Configuration;
         ConfigureAndRegister<Smtp>(builder.Services, configuration, "Smtp");
-        ConfigureAndRegister<CfCaptcha>(builder.Services, configuration, "CfCaptcha");
         ConfigureAndRegister<IpInfo>(builder.Services, configuration, "IpInfo");
         ConfigureAndRegister<StripeApp>(builder.Services, configuration, "Stripe");
 
@@ -110,7 +109,6 @@ public class Program
 
         // Transient services
         builder.Services.AddTransient<IMailerService, MailerService>();
-        builder.Services.AddTransient<ICfCaptchaService, CfCaptchaService>();
         builder.Services.AddTransient<IIpInfoService, IpInfoService>();
         builder.Services.AddTransient<IGoogleMfaService, GoogleMfaService>();
 

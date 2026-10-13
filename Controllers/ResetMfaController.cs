@@ -3,16 +3,14 @@
 public class ResetMfaController : Controller
 {
     private const string GoogleMfaData = "GoogleMfaData";
-    private readonly ICfCaptchaService _cfCaptchaService;
     private readonly DB _db;
     private readonly IGoogleMfaService _googleMfaService;
     private readonly IResetMfaService _resetMfaService;
 
-    public ResetMfaController(DB db, ICfCaptchaService cfCaptchaService, IGoogleMfaService googleMfaService,
+    public ResetMfaController(DB db, IGoogleMfaService googleMfaService,
         IResetMfaService resetMfaService)
     {
         _db = db;
-        _cfCaptchaService = cfCaptchaService;
         _googleMfaService = googleMfaService;
         _resetMfaService = resetMfaService;
     }
@@ -66,12 +64,6 @@ public class ResetMfaController : Controller
         resetMfaVm.Email = resetMfa.User.Email;
         resetMfaVm.QrCodeUrl = googleMfa.QrCodeUrl;
         resetMfaVm.ManualEntryCode = googleMfa.ManualEntryCode;
-
-        if (!_cfCaptchaService.IsCaptchaResponseValid(Request))
-        {
-            TempData[SweetAlert.Danger] = Common.CaptchaErrorMessage;
-            return View(resetMfaVm);
-        }
 
         if (!ModelState.IsValid)
         {

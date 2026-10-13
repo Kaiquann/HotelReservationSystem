@@ -4,19 +4,17 @@ namespace HotelReservationSystem.Controllers;
 
 public class ForgotPasswordController : Controller
 {
-    private readonly ICfCaptchaService _cfCaptchaService;
     private readonly DB _db;
     private readonly IEmailService _emailService;
     private readonly IMailerService _mailerService;
     private readonly IResetPasswordService _resetPasswordService;
 
     public ForgotPasswordController(DB db, IEmailService emailService, IMailerService mailerService,
-        ICfCaptchaService cfCaptchaService, IResetPasswordService resetPasswordService)
+        IResetPasswordService resetPasswordService)
     {
         _db = db;
         _emailService = emailService;
         _mailerService = mailerService;
-        _cfCaptchaService = cfCaptchaService;
         _resetPasswordService = resetPasswordService;
     }
 
@@ -37,12 +35,6 @@ public class ForgotPasswordController : Controller
     [HttpPost]
     public async Task<IActionResult> Index(ForgotPasswordVm forgotPasswordVm)
     {
-        if (!_cfCaptchaService.IsCaptchaResponseValid(Request))
-        {
-            TempData[SweetAlert.Danger] = Common.CaptchaErrorMessage;
-            return View(forgotPasswordVm);
-        }
-
         if (!ModelState.IsValid)
         {
             TempData[SweetAlert.Danger] = Common.InvalidRequestErrorMessage;

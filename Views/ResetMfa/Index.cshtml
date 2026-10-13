@@ -1,5 +1,4 @@
 ﻿@model ResetMfaVm;
-@inject ICfCaptchaService CfCaptchaService
 @{
     ViewBag.Title = "Reset MFA";
 }
@@ -64,7 +63,6 @@
                 </tr>
                 </tfoot>
             </table>
-            @CfCaptchaService.GetCaptchaHtml()
         </form>
     </div>
 </section>

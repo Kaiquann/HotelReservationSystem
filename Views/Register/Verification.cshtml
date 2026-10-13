@@ -1,5 +1,4 @@
 ﻿@model EmailVerificationVm;
-@inject ICfCaptchaService CfCaptchaService
 @{
     ViewBag.Title = "Email Verification";
 }
@@ -18,9 +17,6 @@
                 <button type="submit" class="btn btn-success w-100 p-2" data-confirm>
                     <i class="fas fa-check" aria-hidden="true"></i> Verify
                 </button>
-            </div>
-            <div class="mb-3">
-                @CfCaptchaService.GetCaptchaHtml()
             </div>
         </form>
     </div>

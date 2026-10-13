@@ -1,5 +1,4 @@
 ﻿@model ResetPasswordVm;
-@inject ICfCaptchaService CfCaptchaService
 @{
     ViewBag.Title = "Reset Password";
 }
@@ -32,7 +31,6 @@
                     <i class="fa fa-arrow-left" aria-hidden="true"></i> Go Back
                 </a>
             </div>
-            @CfCaptchaService.GetCaptchaHtml()
         </form>
     </div>
 </section>
