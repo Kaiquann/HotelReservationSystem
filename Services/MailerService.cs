@@ -43,6 +43,17 @@ public class MailerService : IMailerService
 
     public async Task<bool> SendEmail(Mail mail)
     {
+        // Email is optional in environments where SMTP credentials have not been configured.
+        // Returning immediately prevents login and other requests from waiting on an
+        // SMTP connection that cannot authenticate.
+        if (string.IsNullOrWhiteSpace(_smtp.Host) ||
+            string.IsNullOrWhiteSpace(_smtp.From) ||
+            string.IsNullOrWhiteSpace(_smtp.Username) ||
+            string.IsNullOrWhiteSpace(_smtp.Password))
+        {
+            return false;
+        }
+
         MimeMessage message = new();
 
         // From
