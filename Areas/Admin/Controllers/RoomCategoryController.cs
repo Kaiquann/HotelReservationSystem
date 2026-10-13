@@ -8,11 +8,13 @@ public class RoomCategoryController : Controller
 {
     private readonly DB _db;
     private readonly IImageService _imageService;
+    private readonly ILogger<RoomCategoryController> _logger;
 
-    public RoomCategoryController(DB db, IImageService imageService)
+    public RoomCategoryController(DB db, IImageService imageService, ILogger<RoomCategoryController> logger)
     {
         _db = db;
         _imageService = imageService;
+        _logger = logger;
     }
 
     public async Task<IActionResult> Index(string? search, string? sort, string? dir, int page = 1)
@@ -108,18 +110,26 @@ public class RoomCategoryController : Controller
             return Request.RedirectToReferer();
         }
 
-        if (createRoomCategoryVm.Images == null)
+        if (createRoomCategoryVm.Images == null || createRoomCategoryVm.Images.Count == 0)
         {
             TempData[SweetAlert.Danger] = "You need upload at least one";
             return Request.RedirectToReferer();
         }
 
-        if (createRoomCategoryVm.Images != null)
-            foreach (IFormFile img in createRoomCategoryVm.Images)
-            {
-                string error = _imageService.ValidatePhoto(img);
-                if (!string.IsNullOrEmpty(error)) ModelState.AddModelError("RoomCategoryImage", error);
-            }
+        if (createRoomCategoryVm.Images.Count > 5)
+        {
+            TempData[SweetAlert.Danger] = "You can upload a maximum of 5 images.";
+            return Request.RedirectToReferer();
+        }
+
+        foreach (IFormFile img in createRoomCategoryVm.Images)
+        {
+            string error = _imageService.ValidatePhoto(img);
+            if (string.IsNullOrEmpty(error)) continue;
+
+            TempData[SweetAlert.Danger] = $"{img.FileName}: {error}";
+            return Request.RedirectToReferer();
+        }
 
         try
         {
@@ -146,8 +156,10 @@ public class RoomCategoryController : Controller
             TempData[SweetAlert.Success] = "Room Category Created Successfully";
             return RedirectToAction("Index");
         }
-        catch
+        catch (Exception ex)
         {
+            _logger.LogError(ex, "Failed to create room category with {ImageCount} images",
+                createRoomCategoryVm.Images.Count);
             TempData[SweetAlert.Danger] = "An error occurred. Please try again.";
             return RedirectToAction("Index");
         }
