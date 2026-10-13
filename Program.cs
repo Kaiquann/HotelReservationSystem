@@ -2,6 +2,7 @@ global using static HotelReservationSystem.Helper;
 global using System.ComponentModel;
 global using Microsoft.AspNetCore.Authentication.Cookies;
 global using Microsoft.AspNetCore.HttpOverrides;
+global using Microsoft.EntityFrameworkCore;
 
 namespace HotelReservationSystem;
 
@@ -18,16 +19,20 @@ public class Program
         // Step 2: Configure appsettings.json
         builder.Configuration.AddJsonFile("appsettings.json", false, true);
 
-        // Step 3: Configure database context
-        // For connect server use this one with the connection string in appsettings.json
-        //var connectionString = builder.Configuration.GetConnectionString("DBConnection") ??
-        //                       throw new InvalidOperationException("Connection string 'DBConnection' not found.");
-        //builder.Services.AddDbContext<DB>(options => options.UseSqlServer(connectionString));
+        // Step 3: Configure database context. In production, set
+        // ConnectionStrings__DBConnection as an environment variable.
+        string connectionString = builder.Configuration.GetConnectionString("DBConnection") ??
+                                  throw new InvalidOperationException(
+                                      "Connection string 'DBConnection' not found.");
+        builder.Services.AddDbContext<DB>(options =>
+            options.UseSqlServer(connectionString, sql => sql.EnableRetryOnFailure()));
 
-        // For connect local database use this one
-        builder.Services.AddSqlServer<DB>($@"Data Source=(LocalDB)\MSSQLLocalDB;
-                                             AttachDbFilename={builder.Environment.ContentRootPath}\DB.mdf;
-                                             Trusted_Connection=True;");
+        // Railway supplies the public port through the PORT environment variable.
+        string? port = Environment.GetEnvironmentVariable("PORT");
+        if (!string.IsNullOrWhiteSpace(port))
+        {
+            builder.WebHost.UseUrls($"http://0.0.0.0:{port}");
+        }
 
         // Step 4: Configure authentication and authorization
         builder.Services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)

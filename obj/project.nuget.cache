@@ -1,8 +1,8 @@
 {
   "version": 2,
-  "dgSpecHash": "3ErD9q9XaSQ=",
+  "dgSpecHash": "79g1L2361YA=",
   "success": true,
-  "projectFilePath": "C:\\Users\\KaiQuan\\Documents\\HotelManagementSystem\\HotelReservationSystem\\HotelReservationSystem.csproj",
+  "projectFilePath": "C:\\Users\\KaiQuan\\Documents\\Assignment\\HotelManagementSystem\\HotelReservationSystem\\HotelReservationSystem.csproj",
   "expectedPackageFiles": [
     "C:\\Users\\KaiQuan\\.nuget\\packages\\azure.core\\1.38.0\\azure.core.1.38.0.nupkg.sha512",
     "C:\\Users\\KaiQuan\\.nuget\\packages\\azure.identity\\1.11.4\\azure.identity.1.11.4.nupkg.sha512",
@@ -185,9 +185,9 @@
       "code": "NU1902",
       "level": "Warning",
       "message": "Package 'MailKit' 4.11.0 has a known moderate severity vulnerability, https://github.com/advisories/GHSA-9j88-vvj5-vhgr",
-      "projectPath": "C:\\Users\\KaiQuan\\Documents\\HotelManagementSystem\\HotelReservationSystem\\HotelReservationSystem.csproj",
+      "projectPath": "C:\\Users\\KaiQuan\\Documents\\Assignment\\HotelManagementSystem\\HotelReservationSystem\\HotelReservationSystem.csproj",
       "warningLevel": 1,
-      "filePath": "C:\\Users\\KaiQuan\\Documents\\HotelManagementSystem\\HotelReservationSystem\\HotelReservationSystem.csproj",
+      "filePath": "C:\\Users\\KaiQuan\\Documents\\Assignment\\HotelManagementSystem\\HotelReservationSystem\\HotelReservationSystem.csproj",
       "libraryId": "MailKit",
       "targetGraphs": [
         "net8.0"
@@ -196,10 +196,70 @@
     {
       "code": "NU1902",
       "level": "Warning",
-      "message": "Package 'SixLabors.ImageSharp' 3.1.7 has a known moderate severity vulnerability, https://github.com/advisories/GHSA-rxmq-m78w-7wmc",
-      "projectPath": "C:\\Users\\KaiQuan\\Documents\\HotelManagementSystem\\HotelReservationSystem\\HotelReservationSystem.csproj",
+      "message": "Package 'SixLabors.ImageSharp' 3.1.7 has a known moderate severity vulnerability, https://github.com/advisories/GHSA-gwg2-r3hj-4w44",
+      "projectPath": "C:\\Users\\KaiQuan\\Documents\\Assignment\\HotelManagementSystem\\HotelReservationSystem\\HotelReservationSystem.csproj",
       "warningLevel": 1,
-      "filePath": "C:\\Users\\KaiQuan\\Documents\\HotelManagementSystem\\HotelReservationSystem\\HotelReservationSystem.csproj",
+      "filePath": "C:\\Users\\KaiQuan\\Documents\\Assignment\\HotelManagementSystem\\HotelReservationSystem\\HotelReservationSystem.csproj",
+      "libraryId": "SixLabors.ImageSharp",
+      "targetGraphs": [
+        "net8.0"
+      ]
+    },
+    {
+      "code": "NU1903",
+      "level": "Warning",
+      "message": "Package 'SixLabors.ImageSharp' 3.1.7 has a known high severity vulnerability, https://github.com/advisories/GHSA-j3p4-wp97-rph4",
+      "projectPath": "C:\\Users\\KaiQuan\\Documents\\Assignment\\HotelManagementSystem\\HotelReservationSystem\\HotelReservationSystem.csproj",
+      "warningLevel": 1,
+      "filePath": "C:\\Users\\KaiQuan\\Documents\\Assignment\\HotelManagementSystem\\HotelReservationSystem\\HotelReservationSystem.csproj",
+      "libraryId": "SixLabors.ImageSharp",
+      "targetGraphs": [
+        "net8.0"
+      ]
+    },
+    {
+      "code": "NU1903",
+      "level": "Warning",
+      "message": "Package 'SixLabors.ImageSharp' 3.1.7 has a known high severity vulnerability, https://github.com/advisories/GHSA-j9gm-c75j-xc9q",
+      "projectPath": "C:\\Users\\KaiQuan\\Documents\\Assignment\\HotelManagementSystem\\HotelReservationSystem\\HotelReservationSystem.csproj",
+      "warningLevel": 1,
+      "filePath": "C:\\Users\\KaiQuan\\Documents\\Assignment\\HotelManagementSystem\\HotelReservationSystem\\HotelReservationSystem.csproj",
+      "libraryId": "SixLabors.ImageSharp",
+      "targetGraphs": [
+        "net8.0"
+      ]
+    },
+    {
+      "code": "NU1903",
+      "level": "Warning",
+      "message": "Package 'SixLabors.ImageSharp' 3.1.7 has a known high severity vulnerability, https://github.com/advisories/GHSA-jjfr-hcj7-qf5w",
+      "projectPath": "C:\\Users\\KaiQuan\\Documents\\Assignment\\HotelManagementSystem\\HotelReservationSystem\\HotelReservationSystem.csproj",
+      "warningLevel": 1,
+      "filePath": "C:\\Users\\KaiQuan\\Documents\\Assignment\\HotelManagementSystem\\HotelReservationSystem\\HotelReservationSystem.csproj",
+      "libraryId": "SixLabors.ImageSharp",
+      "targetGraphs": [
+        "net8.0"
+      ]
+    },
+    {
+      "code": "NU1902",
+      "level": "Warning",
+      "message": "Package 'SixLabors.ImageSharp' 3.1.7 has a known moderate severity vulnerability, https://github.com/advisories/GHSA-rxmq-m78w-7wmc",
+      "projectPath": "C:\\Users\\KaiQuan\\Documents\\Assignment\\HotelManagementSystem\\HotelReservationSystem\\HotelReservationSystem.csproj",
+      "warningLevel": 1,
+      "filePath": "C:\\Users\\KaiQuan\\Documents\\Assignment\\HotelManagementSystem\\HotelReservationSystem\\HotelReservationSystem.csproj",
+      "libraryId": "SixLabors.ImageSharp",
+      "targetGraphs": [
+        "net8.0"
+      ]
+    },
+    {
+      "code": "NU1902",
+      "level": "Warning",
+      "message": "Package 'SixLabors.ImageSharp' 3.1.7 has a known moderate severity vulnerability, https://github.com/advisories/GHSA-wmxv-xphr-5c9g",
+      "projectPath": "C:\\Users\\KaiQuan\\Documents\\Assignment\\HotelManagementSystem\\HotelReservationSystem\\HotelReservationSystem.csproj",
+      "warningLevel": 1,
+      "filePath": "C:\\Users\\KaiQuan\\Documents\\Assignment\\HotelManagementSystem\\HotelReservationSystem\\HotelReservationSystem.csproj",
       "libraryId": "SixLabors.ImageSharp",
       "targetGraphs": [
         "net8.0"
