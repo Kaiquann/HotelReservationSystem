@@ -27,7 +27,7 @@ public class Program
         builder.Services.AddDbContext<DB>(options =>
             options.UseSqlServer(connectionString, sql => sql.EnableRetryOnFailure()));
 
-        // Railway supplies the public port through the PORT environment variable.
+        // Render supplies the public port through the PORT environment variable.
         string? port = Environment.GetEnvironmentVariable("PORT");
         if (!string.IsNullOrWhiteSpace(port))
         {

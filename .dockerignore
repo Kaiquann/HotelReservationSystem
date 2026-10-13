@@ -1,0 +1,8 @@
+bin/
+obj/
+.git/
+.vs/
+*.mdf
+*.ldf
+*.bak
+appsettings.Development.json
