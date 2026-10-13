@@ -121,6 +121,7 @@ public class Program
         WebApplication app = builder.Build();
 
         // Step 10: Configure middleware pipeline
+        app.UseForwardedHeaders(); // Read the original HTTPS scheme behind a reverse proxy such as Render
         app.UseHttpsRedirection(); // Enforce HTTPS
         app.UseStaticFiles(); // Serve static files
         app.UseRouting(); // Enable routing
