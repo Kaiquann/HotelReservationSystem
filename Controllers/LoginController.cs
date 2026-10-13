@@ -5,15 +5,13 @@ namespace HotelReservationSystem.Controllers;
 public class LoginController : Controller
 {
     private const string LoginData = "LoginData";
-    private readonly ICfCaptchaService _cfCaptchaService;
     private readonly DB _db;
     private readonly IGoogleMfaService _googleMfaService;
     private readonly ILoginService _loginService;
 
-    public LoginController(ICfCaptchaService cfCaptchaService, DB db, IGoogleMfaService googleMfaService,
+    public LoginController(DB db, IGoogleMfaService googleMfaService,
         ILoginService loginService)
     {
-        _cfCaptchaService = cfCaptchaService;
         _db = db;
         _googleMfaService = googleMfaService;
         _loginService = loginService;
@@ -28,12 +26,6 @@ public class LoginController : Controller
     [HttpPost]
     public async Task<IActionResult> Index(LoginVm loginVm, string? returnUrl)
     {
-        if (!_cfCaptchaService.IsCaptchaResponseValid(Request))
-        {
-            TempData[SweetAlert.Danger] = Common.CaptchaErrorMessage;
-            return RedirectToAction();
-        }
-
         if (!ModelState.IsValid)
         {
             TempData[SweetAlert.Danger] = Common.InvalidRequestErrorMessage;
@@ -107,12 +99,6 @@ public class LoginController : Controller
         {
             TempData[SweetAlert.Danger] = Common.InvalidRequestErrorMessage;
             return RedirectToAction("Index");
-        }
-
-        if (!_cfCaptchaService.IsCaptchaResponseValid(Request))
-        {
-            TempData[SweetAlert.Danger] = Common.CaptchaErrorMessage;
-            return View();
         }
 
         if (!ModelState.IsValid)

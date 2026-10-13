@@ -2,7 +2,6 @@
 
 public class ResetPasswordController : Controller
 {
-    private readonly ICfCaptchaService _cfCaptchaService;
     private readonly DB _db;
     private readonly IEmailService _emailService;
     private readonly IIpInfoService _ipInfoService;
@@ -10,12 +9,11 @@ public class ResetPasswordController : Controller
     private readonly IMailerService _mailerService;
     private readonly IResetPasswordService _resetPasswordService;
 
-    public ResetPasswordController(DB db, ICfCaptchaService cfCaptchaService, ILoginService loginService,
+    public ResetPasswordController(DB db, ILoginService loginService,
         IResetPasswordService resetPasswordService, IIpInfoService ipInfoService, IMailerService mailerService,
         IEmailService emailService)
     {
         _db = db;
-        _cfCaptchaService = cfCaptchaService;
         _loginService = loginService;
         _resetPasswordService = resetPasswordService;
         _ipInfoService = ipInfoService;
@@ -50,12 +48,6 @@ public class ResetPasswordController : Controller
     [HttpPost]
     public async Task<IActionResult> Index(ResetPasswordVm resetPasswordVm)
     {
-        if (!_cfCaptchaService.IsCaptchaResponseValid(Request))
-        {
-            TempData[SweetAlert.Danger] = Common.CaptchaErrorMessage;
-            return View(resetPasswordVm);
-        }
-
         if (!ModelState.IsValid)
         {
             TempData[SweetAlert.Danger] = Common.InvalidRequestErrorMessage;

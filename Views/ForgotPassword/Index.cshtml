@@ -1,5 +1,4 @@
 ﻿@model ForgotPasswordVm;
-@inject ICfCaptchaService CfCaptchaService
 @{
     ViewBag.Title = "Forgot Password";
 }
@@ -32,9 +31,6 @@
                 <!-- Right-aligned button -->
                 <div>
                 </div>
-            </div>
-            <div class="mb-3">
-                @CfCaptchaService.GetCaptchaHtml()
             </div>
         </form>
     </div>

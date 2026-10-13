@@ -8,7 +8,6 @@ public class AccountController : Controller
     private const string ChangeEmailData = "ChangeEmailData";
     private const string VerificationToken = "VerificationToken";
     private const string GoogleMfaData = "GoogleMfaData";
-    private readonly ICfCaptchaService _cfCaptchaService;
     private readonly DB _db;
     private readonly IEmailService _emailService;
     private readonly IGoogleMfaService _googleMfaService;
@@ -17,7 +16,7 @@ public class AccountController : Controller
     private readonly IMailerService _mailerService;
 
     public AccountController(DB db, IEmailService emailService, IMailerService mailerService,
-        IIpInfoService ipInfoService, IGoogleMfaService googleMfaService, ICfCaptchaService cfCaptchaService,
+        IIpInfoService ipInfoService, IGoogleMfaService googleMfaService,
         IImageService imageService)
     {
         _db = db;
@@ -25,7 +24,6 @@ public class AccountController : Controller
         _mailerService = mailerService;
         _ipInfoService = ipInfoService;
         _googleMfaService = googleMfaService;
-        _cfCaptchaService = cfCaptchaService;
         _imageService = imageService;
     }
 
@@ -255,12 +253,6 @@ public class AccountController : Controller
         {
             TempData[SweetAlert.Danger] = Common.PleaseLoginToContinueErrorMessage;
             return RedirectToAction("Index", "Home");
-        }
-
-        if (!_cfCaptchaService.IsCaptchaResponseValid(Request))
-        {
-            TempData[SweetAlert.Danger] = Common.CaptchaErrorMessage;
-            return View();
         }
 
         string? changeEmailData = HttpContext.Session.GetString(ChangeEmailData);

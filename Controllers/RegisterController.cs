@@ -6,18 +6,15 @@ public class RegisterController : Controller
 {
     private const string RegisterData = "RegisterData";
     private const string VerificationToken = "VerificationToken";
-    private readonly ICfCaptchaService _cfCaptchaService;
     private readonly DB _db;
     private readonly IEmailService _emailService;
     private readonly IMailerService _mailerService;
 
-    public RegisterController(DB db, IEmailService emailService, IMailerService mailerService,
-        ICfCaptchaService cfCaptchaService)
+    public RegisterController(DB db, IEmailService emailService, IMailerService mailerService)
     {
         _db = db;
         _emailService = emailService;
         _mailerService = mailerService;
-        _cfCaptchaService = cfCaptchaService;
     }
 
     public IActionResult Index()
@@ -28,12 +25,6 @@ public class RegisterController : Controller
     [HttpPost]
     public async Task<IActionResult> Index(RegisterVm registerVm)
     {
-        if (!_cfCaptchaService.IsCaptchaResponseValid(Request))
-        {
-            TempData[SweetAlert.Danger] = Common.CaptchaErrorMessage;
-            return View(registerVm);
-        }
-
         if (!ModelState.IsValid)
         {
             TempData[SweetAlert.Danger] = Common.InvalidRequestErrorMessage;
@@ -83,12 +74,6 @@ public class RegisterController : Controller
     [HttpPost]
     public async Task<IActionResult> Verification(string token)
     {
-        if (!_cfCaptchaService.IsCaptchaResponseValid(Request))
-        {
-            TempData[SweetAlert.Danger] = Common.CaptchaErrorMessage;
-            return View();
-        }
-
         if (!ModelState.IsValid)
         {
             TempData[SweetAlert.Danger] = Common.InvalidRequestErrorMessage;

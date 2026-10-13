@@ -1,5 +1,4 @@
 ﻿@model LoginVm;
-@inject ICfCaptchaService CfCaptchaService
 @{
     ViewBag.Title = "Login";
 }
@@ -41,7 +40,6 @@
                     <i class="fas fa-user-plus" aria-hidden="true"></i> Register
                 </a>
             </p>
-            @CfCaptchaService.GetCaptchaHtml()
         </form>
     </div>
 </section>

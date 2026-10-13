@@ -1,5 +1,4 @@
 ﻿@model RecoveryMfaVm;
-@inject ICfCaptchaService CfCaptchaService
 @{
     ViewBag.Title = "Recovery MFA";
 }
@@ -32,9 +31,6 @@
                 <!-- Right-aligned button -->
                 <div>
                 </div>
-            </div>
-            <div class="mb-3">
-                @CfCaptchaService.GetCaptchaHtml()
             </div>
         </form>
     </div>

@@ -16,8 +16,10 @@ public class Program
         // Step 1: Create the builder
         WebApplicationBuilder builder = WebApplication.CreateBuilder(args);
 
-        // Step 2: Configure appsettings.json
-        builder.Configuration.AddJsonFile("appsettings.json", false, true);
+        // Step 2: WebApplication.CreateBuilder already loads appsettings.json,
+        // appsettings.{Environment}.json, and environment variables in the
+        // correct precedence order. Do not reload JSON here because it would
+        // override production environment variables such as the DB connection.
 
         // Step 3: Configure database context. In production, set
         // ConnectionStrings__DBConnection as an environment variable.
@@ -81,7 +83,6 @@ public class Program
         // Step 7: Bind configuration sections
         ConfigurationManager configuration = builder.Configuration;
         ConfigureAndRegister<Smtp>(builder.Services, configuration, "Smtp");
-        ConfigureAndRegister<CfCaptcha>(builder.Services, configuration, "CfCaptcha");
         ConfigureAndRegister<IpInfo>(builder.Services, configuration, "IpInfo");
         ConfigureAndRegister<StripeApp>(builder.Services, configuration, "Stripe");
 
@@ -108,7 +109,6 @@ public class Program
 
         // Transient services
         builder.Services.AddTransient<IMailerService, MailerService>();
-        builder.Services.AddTransient<ICfCaptchaService, CfCaptchaService>();
         builder.Services.AddTransient<IIpInfoService, IpInfoService>();
         builder.Services.AddTransient<IGoogleMfaService, GoogleMfaService>();
 

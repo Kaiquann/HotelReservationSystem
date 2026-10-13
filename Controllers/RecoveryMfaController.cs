@@ -4,19 +4,17 @@ namespace HotelReservationSystem.Controllers;
 
 public class RecoveryMfaController : Controller
 {
-    private readonly ICfCaptchaService _cfCaptchaService;
     private readonly DB _db;
     private readonly IEmailService _emailService;
     private readonly IMailerService _mailerService;
     private readonly IResetMfaService _resetMfaService;
 
     public RecoveryMfaController(DB db, IEmailService emailService, IMailerService mailerService,
-        ICfCaptchaService cfCaptchaService, IResetMfaService resetMfaService)
+        IResetMfaService resetMfaService)
     {
         _db = db;
         _emailService = emailService;
         _mailerService = mailerService;
-        _cfCaptchaService = cfCaptchaService;
         _resetMfaService = resetMfaService;
     }
 
@@ -28,12 +26,6 @@ public class RecoveryMfaController : Controller
     [HttpPost]
     public async Task<IActionResult> Index(RecoveryMfaVm recoveryMfaVm)
     {
-        if (!_cfCaptchaService.IsCaptchaResponseValid(Request))
-        {
-            TempData[SweetAlert.Danger] = Common.CaptchaErrorMessage;
-            return View(recoveryMfaVm);
-        }
-
         if (!ModelState.IsValid)
         {
             TempData[SweetAlert.Danger] = Common.InvalidRequestErrorMessage;

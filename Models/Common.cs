@@ -18,8 +18,6 @@ public static class Common
     public const string EmailExistsErrorMessage = "Email already exists.";
     public const string PhoneNumberErrorMessage = "Invalid {0}";
 
-    public const string CaptchaErrorMessage = "Captcha is required.";
-
     public const string PleaseLoginToContinueErrorMessage = "Please login to continue.";
 
     // Room Error Message
