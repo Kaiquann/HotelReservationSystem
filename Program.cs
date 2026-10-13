@@ -161,6 +161,23 @@ public class Program
             "default",
             "{controller=Home}/{action=Index}/{id?}");
 
+        // The original migrations create RoomSettings but do not seed any rows.
+        // Rooms require a valid RoomSettingId, so provide the four supported
+        // preference/corner combinations when the table is empty.
+        using (IServiceScope scope = app.Services.CreateScope())
+        {
+            DB db = scope.ServiceProvider.GetRequiredService<DB>();
+            if (!db.RoomSettings.Any())
+            {
+                db.RoomSettings.AddRange(
+                    new RoomSetting { IsSmokingArea = true, IsLandscapeArea = false, IsCornerRoom = false },
+                    new RoomSetting { IsSmokingArea = true, IsLandscapeArea = false, IsCornerRoom = true },
+                    new RoomSetting { IsSmokingArea = false, IsLandscapeArea = true, IsCornerRoom = false },
+                    new RoomSetting { IsSmokingArea = false, IsLandscapeArea = true, IsCornerRoom = true });
+                db.SaveChanges();
+            }
+        }
+
         // Step 12: Run the application
         app.Run();
     }

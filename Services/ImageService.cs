@@ -45,6 +45,9 @@ public class ImageService : IImageService
         string file = Guid.NewGuid().ToString("n") + ".jpg";
         string path = Path.Combine(_environment.WebRootPath, folder, file);
 
+        string? directory = Path.GetDirectoryName(path);
+        if (!string.IsNullOrWhiteSpace(directory)) Directory.CreateDirectory(directory);
+
         ResizeOptions options = new()
         {
             Size = new Size(200, 200),
