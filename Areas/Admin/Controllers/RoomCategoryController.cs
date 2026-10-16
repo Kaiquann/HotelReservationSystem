@@ -349,7 +349,7 @@ public class RoomCategoryController : Controller
     [HttpPost]
     public async Task<IActionResult> DeleteImage(int imageId)
     {
-        if (!ModelState.IsValid)
+        if (!ModelState.IsValid || imageId <= 0)
         {
             TempData[SweetAlert.Danger] = Common.InvalidRequestErrorMessage;
             return Request.RedirectToReferer();
@@ -373,12 +373,34 @@ public class RoomCategoryController : Controller
             return Request.RedirectToReferer();
         }
 
-        if (roomCategoryImage.ImageData == null)
-            _imageService.DeletePhoto(roomCategoryImage.ImagePath, Common.ImageUploadPath);
+        try
+        {
+            _db.RoomImages.Remove(roomCategoryImage);
+            await _db.SaveChangesAsync();
 
-        _db.RoomImages.Remove(roomCategoryImage);
-        await _db.SaveChangesAsync();
-        TempData[SweetAlert.Success] = "Remove successful";
+            // Old records may refer to files from an earlier deployment. Removing
+            // that stale file must not prevent the database record from being deleted.
+            if (roomCategoryImage.ImageData == null)
+            {
+                try
+                {
+                    _imageService.DeletePhoto(roomCategoryImage.ImagePath, Common.ImageUploadPath);
+                }
+                catch (Exception ex) when (ex is IOException or UnauthorizedAccessException)
+                {
+                    _logger.LogWarning(ex, "Could not delete legacy room image file {ImagePath}",
+                        roomCategoryImage.ImagePath);
+                }
+            }
+
+            TempData[SweetAlert.Success] = "Image removed successfully";
+        }
+        catch (DbUpdateException ex)
+        {
+            _logger.LogError(ex, "Failed to delete room image {ImageId}", imageId);
+            TempData[SweetAlert.Danger] = "The image could not be removed from the database.";
+        }
+
         return Request.RedirectToReferer();
     }
 
