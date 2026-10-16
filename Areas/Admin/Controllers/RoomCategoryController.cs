@@ -97,29 +97,35 @@ public class RoomCategoryController : Controller
     {
         if (!ModelState.IsValid)
         {
-            TempData[SweetAlert.Danger] = Common.InvalidRequestErrorMessage;
-            return Request.RedirectToReferer();
+            TempData[SweetAlert.Danger] = string.Join(" ", ModelState.Values
+                .SelectMany(value => value.Errors)
+                .Select(error => error.ErrorMessage)
+                .Where(message => !string.IsNullOrWhiteSpace(message)));
+            return View("Create", createRoomCategoryVm);
         }
 
-        bool checkName = _db.RoomCategories
-            .Any(rc => rc.Type.Equals(createRoomCategoryVm.RoomCategoryType));
+        string categoryType = createRoomCategoryVm.RoomCategoryType.Trim();
+        categoryType = char.ToUpperInvariant(categoryType[0]) + categoryType[1..];
+
+        bool checkName = await _db.RoomCategories
+            .AnyAsync(rc => rc.Type == categoryType);
 
         if (checkName)
         {
             TempData[SweetAlert.Danger] = "This Room Category already exists";
-            return Request.RedirectToReferer();
+            return View("Create", createRoomCategoryVm);
         }
 
         if (createRoomCategoryVm.Images == null || createRoomCategoryVm.Images.Count == 0)
         {
             TempData[SweetAlert.Danger] = "You need upload at least one";
-            return Request.RedirectToReferer();
+            return View("Create", createRoomCategoryVm);
         }
 
         if (createRoomCategoryVm.Images.Count > 5)
         {
             TempData[SweetAlert.Danger] = "You can upload a maximum of 5 images.";
-            return Request.RedirectToReferer();
+            return View("Create", createRoomCategoryVm);
         }
 
         foreach (IFormFile img in createRoomCategoryVm.Images)
@@ -128,21 +134,22 @@ public class RoomCategoryController : Controller
             if (string.IsNullOrEmpty(error)) continue;
 
             TempData[SweetAlert.Danger] = $"{img.FileName}: {error}";
-            return Request.RedirectToReferer();
+            return View("Create", createRoomCategoryVm);
         }
 
+        List<string> savedImages = [];
         try
         {
             List<RoomImage>? roomImages = createRoomCategoryVm.Images?.Select(img =>
             {
                 string name = _imageService.SavePhoto(img, Common.ImageUploadPath);
+                savedImages.Add(name);
                 return new RoomImage { ImagePath = name };
             }).ToList();
 
             RoomCategory newRoomCategory = new RoomCategory
             {
-                Type = createRoomCategoryVm.RoomCategoryType = char.ToUpper(createRoomCategoryVm.RoomCategoryType[0]) +
-                                                               createRoomCategoryVm.RoomCategoryType.Substring(1),
+                Type = categoryType,
                 Price = createRoomCategoryVm.Price,
                 MaxPeople = createRoomCategoryVm.MaxPeople,
                 Description = createRoomCategoryVm.Description,
@@ -158,10 +165,15 @@ public class RoomCategoryController : Controller
         }
         catch (Exception ex)
         {
+            foreach (string savedImage in savedImages)
+                _imageService.DeletePhoto(savedImage, Common.ImageUploadPath);
+
             _logger.LogError(ex, "Failed to create room category with {ImageCount} images",
                 createRoomCategoryVm.Images.Count);
-            TempData[SweetAlert.Danger] = "An error occurred. Please try again.";
-            return RedirectToAction("Index");
+            TempData[SweetAlert.Danger] = ex is DbUpdateException
+                ? "The room category could not be saved because the database rejected the data. Check that the database migrations are up to date."
+                : "One of the uploaded files could not be processed. Please upload a valid JPG or PNG image.";
+            return View("Create", createRoomCategoryVm);
         }
     }
 
