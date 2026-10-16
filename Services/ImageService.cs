@@ -48,15 +48,20 @@ public class ImageService : IImageService
         string? directory = Path.GetDirectoryName(path);
         if (!string.IsNullOrWhiteSpace(directory)) Directory.CreateDirectory(directory);
 
-        ResizeOptions options = new()
-        {
-            Size = new Size(200, 200),
-            Mode = ResizeMode.Crop
-        };
-
         using Stream stream = f.OpenReadStream();
         using Image img = Image.Load(stream);
-        img.Mutate(x => x.Resize(options));
+
+        // Keep enough detail for the room cards and full room page. Previously every
+        // upload was cropped to 200x200 and then enlarged by the browser, causing blur.
+        if (img.Width > 1600 || img.Height > 1200)
+        {
+            img.Mutate(x => x.Resize(new ResizeOptions
+            {
+                Size = new Size(1600, 1200),
+                Mode = ResizeMode.Max
+            }));
+        }
+
         img.Save(path);
 
         return file;

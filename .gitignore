@@ -1,0 +1,35 @@
+# Build output
+[Bb]in/
+[Oo]bj/
+
+# Visual Studio user and workspace files
+.vs/
+*.user
+*.suo
+*.userosscache
+*.sln.docstates
+
+# JetBrains Rider
+.idea/
+*.sln.iml
+
+# Test and coverage output
+[Tt]est[Rr]esult*/
+coverage/
+*.coverage
+*.coveragexml
+
+# NuGet packages and generated package files
+packages/
+*.nupkg
+*.snupkg
+
+# Publish output
+[Pp]ublish/
+
+# OS-generated files
+.DS_Store
+Thumbs.db
+
+# Local logs
+*.log

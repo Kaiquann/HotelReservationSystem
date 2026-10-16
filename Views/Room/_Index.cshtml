@@ -20,6 +20,7 @@
                                 <img src="/@(Common.ImageUploadPath + room.RoomImages.FirstOrDefault().ImagePath)"
                                      class="card-img-top"
                                      alt="Room Image"
+                                     onerror="this.onerror=null;this.src='/images/importImage.png';"
                                      loading="lazy">
                             }
                             <div class="card-body text-center">
