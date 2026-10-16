@@ -20,7 +20,7 @@
                                 foreach (var image in Model.RoomImageList)
                                 {
                                     <div class="position-relative">
-                                        <img src="/@(Common.ImageUploadPath + image.ImagePath)"
+                                        <img src="/room-image/@image.Id"
                                              class="img-thumbnail"
                                              style="max-height: 150px; max-width: 150px;"/>
 

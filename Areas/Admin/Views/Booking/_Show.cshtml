@@ -9,7 +9,7 @@
             <td colspan="3">
                 @foreach (RoomImage roomCategoryRoomImage in Model.Room.RoomCategory.RoomImages)
                 {
-                    <img src="/@Common.ImageUploadPath/@roomCategoryRoomImage.ImagePath" alt="Image"
+                    <img src="/room-image/@roomCategoryRoomImage.Id" alt="Image"
                          class="img-thumbnail" loading="lazy" style="max-height: 200px; max-width: 200px;"/>
                 }
             </td>

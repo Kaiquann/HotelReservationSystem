@@ -137,14 +137,16 @@ public class RoomCategoryController : Controller
             return View("Create", createRoomCategoryVm);
         }
 
-        List<string> savedImages = [];
         try
         {
             List<RoomImage>? roomImages = createRoomCategoryVm.Images?.Select(img =>
             {
-                string name = _imageService.SavePhoto(img, Common.ImageUploadPath);
-                savedImages.Add(name);
-                return new RoomImage { ImagePath = name };
+                return new RoomImage
+                {
+                    ImagePath = Guid.NewGuid().ToString("n") + ".jpg",
+                    ImageData = _imageService.ProcessPhoto(img),
+                    ContentType = "image/jpeg"
+                };
             }).ToList();
 
             RoomCategory newRoomCategory = new RoomCategory
@@ -165,9 +167,6 @@ public class RoomCategoryController : Controller
         }
         catch (Exception ex)
         {
-            foreach (string savedImage in savedImages)
-                _imageService.DeletePhoto(savedImage, Common.ImageUploadPath);
-
             _logger.LogError(ex, "Failed to create room category with {ImageCount} images",
                 createRoomCategoryVm.Images.Count);
             TempData[SweetAlert.Danger] = ex is DbUpdateException
@@ -244,8 +243,12 @@ public class RoomCategoryController : Controller
         {
             List<RoomImage>? roomImages = editRoomCategoryVm.Images?.Select(img =>
             {
-                string name = _imageService.SavePhoto(img, Common.ImageUploadPath);
-                return new RoomImage { ImagePath = name };
+                return new RoomImage
+                {
+                    ImagePath = Guid.NewGuid().ToString("n") + ".jpg",
+                    ImageData = _imageService.ProcessPhoto(img),
+                    ContentType = "image/jpeg"
+                };
             }).ToList();
 
             roomCategory.Type = editRoomCategoryVm.RoomCategory.Type;
@@ -370,7 +373,8 @@ public class RoomCategoryController : Controller
             return Request.RedirectToReferer();
         }
 
-        _imageService.DeletePhoto(roomCategoryImage.ImagePath, Common.ImageUploadPath);
+        if (roomCategoryImage.ImageData == null)
+            _imageService.DeletePhoto(roomCategoryImage.ImagePath, Common.ImageUploadPath);
 
         _db.RoomImages.Remove(roomCategoryImage);
         await _db.SaveChangesAsync();

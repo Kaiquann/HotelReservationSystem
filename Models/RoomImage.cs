@@ -8,6 +8,10 @@ public class RoomImage
 
     [MaxLength(255)] public string ImagePath { get; set; } = string.Empty;
 
+    public byte[]? ImageData { get; set; }
+
+    [MaxLength(100)] public string? ContentType { get; set; }
+
     public int RoomCategoryId { get; set; }
 
     public DateTime CreatedAt { get; set; } = DateTime.Now;

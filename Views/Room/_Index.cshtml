@@ -17,7 +17,7 @@
                         <div class="card">
                             @if (room.RoomImages != null && room.RoomImages.Any())
                             {
-                                <img src="/@(Common.ImageUploadPath + room.RoomImages.FirstOrDefault().ImagePath)"
+                                <img src="/room-image/@room.RoomImages.First().Id"
                                      class="card-img-top"
                                      alt="Room Image"
                                      onerror="this.onerror=null;this.src='/images/importImage.png';"

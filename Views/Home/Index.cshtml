@@ -131,7 +131,7 @@
                         {
                             <a class="room-link mx-3 my-2 text-decoration-none" style="color: black" asp-area="" asp-controller="Room" asp-action="ViewRoom" asp-route-id="@room.Id">
                                 <div class="carousel-item @(isActive ? "active" : "")">
-                                    <img src="/@(Common.ImageUploadPath + firstImage.ImagePath)" class="d-block w-50 rounded m-auto" alt="Room Image" loading="lazy">
+                                    <img src="/room-image/@firstImage.Id" class="d-block w-50 rounded m-auto" alt="Room Image" loading="lazy">
                                     <div class="card-body text-center">
                                         <h5 class="card-title">@room.Type</h5>
                                     </div>

@@ -167,6 +167,7 @@ public class Program
         using (IServiceScope scope = app.Services.CreateScope())
         {
             DB db = scope.ServiceProvider.GetRequiredService<DB>();
+            db.Database.Migrate();
             if (!db.RoomSettings.Any())
             {
                 db.RoomSettings.AddRange(

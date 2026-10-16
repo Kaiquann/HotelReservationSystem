@@ -12,6 +12,7 @@ namespace HotelReservationSystem.Services;
 public interface IImageService
 {
     string ValidatePhoto(IFormFile f);
+    byte[] ProcessPhoto(IFormFile f);
     string SavePhoto(IFormFile f, string folder);
     void DeletePhoto(string file, string folder);
 }
@@ -48,6 +49,13 @@ public class ImageService : IImageService
         string? directory = Path.GetDirectoryName(path);
         if (!string.IsNullOrWhiteSpace(directory)) Directory.CreateDirectory(directory);
 
+        File.WriteAllBytes(path, ProcessPhoto(f));
+
+        return file;
+    }
+
+    public byte[] ProcessPhoto(IFormFile f)
+    {
         using Stream stream = f.OpenReadStream();
         using Image img = Image.Load(stream);
 
@@ -62,9 +70,9 @@ public class ImageService : IImageService
             }));
         }
 
-        img.Save(path);
-
-        return file;
+        using MemoryStream output = new();
+        img.SaveAsJpeg(output);
+        return output.ToArray();
     }
 
     public void DeletePhoto(string file, string folder)

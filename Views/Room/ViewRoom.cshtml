@@ -201,7 +201,7 @@
                             var index = 0;
 
                             <div class="carousel-item @(index == 0 ? "active" : "")">
-                                <img src="/@(Common.ImageUploadPath + img.ImagePath)" class="d-block w-100" style="height: 700px;" alt="Suite Image" loading="lazy"/>
+                                <img src="/room-image/@img.Id" class="d-block w-100" style="height: 700px; object-fit: cover;" alt="Suite Image" loading="lazy"/>
                             </div>
                             index++;
                         }

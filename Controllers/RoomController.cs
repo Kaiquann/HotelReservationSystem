@@ -115,6 +115,21 @@ public class RoomController : Controller
         return View(viewRoomVm);
     }
 
+    [HttpGet("room-image/{id:int}")]
+    public async Task<IActionResult> Image(int id)
+    {
+        RoomImage? image = await _db.RoomImages
+            .AsNoTracking()
+            .FirstOrDefaultAsync(roomImage => roomImage.Id == id);
+
+        if (image == null) return NotFound();
+
+        if (image.ImageData is { Length: > 0 })
+            return File(image.ImageData, image.ContentType ?? "image/jpeg");
+
+        return Redirect("/" + Common.ImageUploadPath + Path.GetFileName(image.ImagePath));
+    }
+
 
     [HttpPost]
     public async Task<IActionResult> SearchRoom(RoomVm roomVm, string? search, string? filter)
