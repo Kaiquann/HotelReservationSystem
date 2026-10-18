@@ -5,7 +5,7 @@
 <head>
     <meta charset="utf-8"/>
     <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-    <title>@ViewBag.Title</title>
+    <title>@ViewBag.Title | @Common.CompanyName</title>
 
     <!-- Icon -->
     <link rel="website icon" type="jpg" href="/images/logo.jpg"/>
@@ -25,54 +25,6 @@
     @await RenderSectionAsync("head", false)
 </head>
 <body>
-<style>
-    .container-fluid {
-        padding-left: 0;
-        padding-right: 0;
-    }
-
-    .navbar {
-        background-color: #2b2a2a;
-        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-        padding: 10px 20px;
-        width: 100%;
-        z-index: 1050;
-    }
-
-    .nav-link {
-        border-radius: 5px;
-        color: white;
-        font-size: 18px;
-        font-weight: 500;
-        padding: 8px 15px;
-        transition: background 0.3s ease, color 0.3s ease;
-    }
-
-    .nav-link.active { color: red; }
-
-    .nav-link:hover { color: red; }
-
-    .dropdown-menu {
-        background-color: white;
-        border: 1px solid #ddd;
-        border-radius: 0px;
-        box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.15);
-        display: none;
-        left: 0;
-        margin-right: 0;
-        padding: 0.5rem 0;
-        position: absolute;
-        right: auto;
-        z-index: 1000;
-    }
-
-    .dropdown-menu.show { display: block; }
-
-    .dropdownToggle {
-        background-color: #DCDCDC;
-        margin-right: 100px;
-    }
-</style>
 
 <header>
     <!-- Loading Spinner -->
@@ -80,55 +32,64 @@
         <div class="spinner"></div>
     </div>
 
-    <div class="container-fluid">
-        <nav class="navbar d-flex justify-content-between align-items-center">
-            <div class="navbar-brand fw-bold text-primary">@Common.CompanyName</div>
-            <ul class="nav">
+    <nav class="navbar navbar-expand-lg navbar-dark site-navbar" aria-label="Main navigation">
+        <div class="container-xl">
+            <a class="navbar-brand" asp-area="" asp-controller="Home" asp-action="Index">
+                <span class="brand-mark" aria-hidden="true"><i class="fas fa-hotel"></i></span>
+                <span>@Common.CompanyName</span>
+            </a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#mainNavigation" aria-controls="mainNavigation" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="mainNavigation">
+            <ul class="navbar-nav mx-auto mb-2 mb-lg-0">
                 <li class="nav-item">
-                    <a class="nav-link mx-3 my-2 @Html.IsActive("Home", "Index")" asp-area="" asp-controller="Home" asp-action="Index">Home</a>
+                    <a class="nav-link @Html.IsActive("Home", "Index")" asp-area="" asp-controller="Home" asp-action="Index">Home</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link mx-3 my-2 @Html.IsActive("Room")" asp-area="" asp-controller="Room" asp-action="Index">Hotel</a>
+                    <a class="nav-link @Html.IsActive("Room")" asp-area="" asp-controller="Room" asp-action="Index">Rooms</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link mx-3 my-2 @Html.IsActive("Home", "AboutUs")" asp-area="" asp-controller="Home" asp-action="AboutUs">About Us</a>
+                    <a class="nav-link @Html.IsActive("Home", "AboutUs")" asp-area="" asp-controller="Home" asp-action="AboutUs">About</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link mx-3 my-2 @Html.IsActive("Home", "ContactUs")" asp-area="" asp-controller="Home" asp-action="ContactUs">Contact</a>
+                    <a class="nav-link @Html.IsActive("Home", "ContactUs")" asp-area="" asp-controller="Home" asp-action="ContactUs">Contact</a>
                 </li>
                 @if (User.IsLoggedIn() && !User.HasAdminAccess())
                 {
                     <li class="nav-item">
-                        <a class="nav-link mx-3 my-2 @Html.IsActive("Cart")" asp-area="" asp-controller="Cart" asp-action="Index">Cart</a>
+                        <a class="nav-link @Html.IsActive("Cart")" asp-area="" asp-controller="Cart" asp-action="Index"><i class="fas fa-shopping-bag me-1" aria-hidden="true"></i> Cart</a>
                     </li>
                 }
                 @if (User.HasAdminAccess())
                 {
                     <li class="nav-item">
-                        <a class="nav-link mx-3 my-2 @Html.IsActive("Dashboard")" asp-area="Admin" asp-controller="User" asp-action="Index">Admin Dashboard</a>
+                        <a class="nav-link @Html.IsActive("Dashboard")" asp-area="Admin" asp-controller="User" asp-action="Index">Dashboard</a>
                     </li>
                 }
             </ul>
 
-            <div class="dropdown">
-                <button id="dropdownToggle" class="dropdownToggle btn btn-light">
-                    <i class="bi bi-three-dots"></i>
+            <div class="dropdown account-menu">
+                <button id="dropdownToggle" class="dropdownToggle btn" aria-label="Open account menu" aria-haspopup="true" aria-expanded="false">
+                    <i class="fas fa-user" aria-hidden="true"></i>
                 </button>
                 <partial name="_LoginPartial"/>
             </div>
-        </nav>
-    </div>
+            </div>
+        </div>
+    </nav>
 </header>
 
-<div class="container-fluid">
-    <main role="main" class="pb-3">
+<div class="site-content">
+    <main role="main">
         @RenderBody()
     </main>
 </div>
 
-<footer class="border-top footer text-muted">
-    <div class="container">
-        &copy; @DateTime.Today.Year - HotelReservationSystem
+<footer class="site-footer">
+    <div class="container-xl d-flex flex-column flex-md-row align-items-center justify-content-between gap-2">
+        <div><span class="footer-brand">@Common.CompanyName</span><span class="ms-2">Comfort in every stay.</span></div>
+        <div>&copy; @DateTime.Today.Year @Common.CompanyName. All rights reserved.</div>
     </div>
 </footer>
 
