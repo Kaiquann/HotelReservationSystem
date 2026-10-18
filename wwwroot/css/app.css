@@ -56,6 +56,15 @@ textarea.form-control { min-height: 120px; }
 .form-check-input:checked { background-color: var(--brand); border-color: var(--brand); }
 .text-danger,.err { color: var(--danger) !important; font-size: .88rem; }
 
+/* Preserve the original Bootstrap palette on account registration and contact. */
+.register-page,.contact-page { background: #fff; }
+.register-page .btn-success { color: #fff; background-color: #198754; border-color: #198754; }
+.register-page .btn-success:hover { background-color: #157347; border-color: #146c43; }
+.register-page a { color: #0d6efd; }
+.contact-page .text-primary { color: #0d6efd !important; }
+.contact-page .btn-danger { color: #fff; background-color: #dc3545; border-color: #dc3545; }
+.contact-page .btn-danger:hover { background-color: #bb2d3b; border-color: #b02a37; }
+
 /* Buttons */
 .btn { min-height: 40px; padding: .55rem 1rem; border-radius: 10px; font-weight: 650; transition: transform .18s ease,box-shadow .18s ease,background-color .18s ease; }
 .btn:hover { transform: translateY(-1px); }
